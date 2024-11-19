@@ -1,20 +1,41 @@
 import { Box } from "@mui/material";
 import { useState } from "react";
 import ProductsNavTab from "../components/tabs/productsNavTab";
-import ProductsTab from "../components/tabs/productsTab";
+import ProductsTable from "../components/tables/ProductsTables.jsx";
+import PresentaTab from "../components/tabs/PresentaTab.jsx";
+import EstatusTable from "../components/tables/EstatusTable.jsx";
+import InfoAdTable from "../components/tables/InfoAdTable.jsx";
+import NegociosTable from "../components/tables/NegociosTable.jsx";
 
 const Products = () => {
     const [currentRowInProductsTab, setCurrentRowInProductsTab] = useState(0);
     const [currentTabInPrincipalTab, setCurrentTabInPrincipalTab] = useState("PRODUCTOS");
+    const [datosSeleccionados, setDatosSeleccionados] = useState({IdInstitutoOK: "0", IdProdServOK: "0"});
+
     return (
         <Box>
 
             <ProductsNavTab
                 setCurrentRowInProductsTab={setCurrentRowInProductsTab} 
-                setCurrentTabInPrincipalTab={setCurrentTabInPrincipalTab} 
+                setCurrentNameTabInPrincipalTab={setCurrentTabInPrincipalTab} 
             />
 
-            {currentTabInPrincipalTab == "PRODUCTOS" && <ProductsTab />}
+            {currentTabInPrincipalTab == "PRODUCTOS" && 
+                <ProductsTable setDatosSeleccionados={setDatosSeleccionados} datosSeleccionados={datosSeleccionados}/>}
+
+            {/* Página de negocios */}
+            {currentTabInPrincipalTab === "ESTATUS" && <EstatusTable datosSeleccionados={datosSeleccionados}/>}
+
+            {/*Pagina de presenta*/}
+            {currentTabInPrincipalTab === "PRESENTACIONES" && <PresentaTab datosSeleccionados={datosSeleccionados}/>}
+
+            {/*Pagina de Negocios*/}
+            {currentTabInPrincipalTab === "NEGOCIOS" && <NegociosTable datosSeleccionados={datosSeleccionados}/>}
+
+            {/*Página de Información adicional*/}
+            {currentTabInPrincipalTab === "INFO_AD" &&
+                <InfoAdTable datosSeleccionados={datosSeleccionados}/>}
+
         </Box>
     );
 };

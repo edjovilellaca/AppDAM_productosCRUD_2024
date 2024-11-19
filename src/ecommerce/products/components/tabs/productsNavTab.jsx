@@ -1,6 +1,6 @@
 import { Box, Tabs, Tab } from "@mui/material";
 import React, { useState } from "react";
-const ProductsTabs = ["Institutos", "Negocios"];
+const ProductsTabs = ["PRODUCTOS", "ESTATUS", "PRESENTACIONES", "NEGOCIOS", "INFO_AD"];
 
 //const ProductsNavTab = ({currentRowInProductsTab, setCurrentNameTabInPrincipalTab, setBusinessTabInPrincipalTabIsSelected}) => {
 
@@ -9,23 +9,27 @@ const ProductsNavTab = ({currentRowInProductsTab, setCurrentNameTabInPrincipalTa
     const [currenTabIndex, setCurrentTabIndex] = useState(0);
     const handleChange = (e) => {
         
-        console.log("entro al handleChange", e.target.innerText.toUpperCase());
-        
         //FIC: actualizar el nombre de la pestaña seleccionada.
         setCurrentNameTabInPrincipalTab(e.target.innerText.toUpperCase());
-        
-        //FIC: cada que realice un click en algun tap page
-        //reiniciamos el valor del tap pase de business a false.
-        //setBusinessTabInPrincipalTabIsSelected(false);
 
         //FIC: opciones (subdocumentos de la coleccion principal de institutos).
         switch (e.target.innerText.toUpperCase()) {
-            case "INSTITUTOS":
+            case "PRODUCTOS":
                 setCurrentTabIndex(0);
                 break;
-            case "NEGOCIOS":
+            case "ESTATUS":
                 setCurrentTabIndex(1);
                 break;
+            case "PRESENTACIONES":
+                setCurrentTabIndex(2);
+                break;
+            case "NEGOCIOS":
+                setCurrentTabIndex(3);
+                break;
+            case "INFO_AD":
+                setCurrentTabIndex(4);
+                break;
+                                           
         }
 
         //FIC: cambiamos el estado de la tap de business a un true para indicar

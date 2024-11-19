@@ -35,7 +35,7 @@ const ProdServColumns = [
     }
 ];
 
-const ProductsTable = () => {
+const ProductsTable = ({setDatosSeleccionados, datosSeleccionados}) => {
 
     const [loadingTable, setLoadingTable] = useState(true);
     const [ProdServsData, setProdServData] = useState([]);
@@ -57,6 +57,17 @@ const ProductsTable = () => {
     useEffect(() => {
         fetchData();
     }, []);
+
+    // Función para manejar el clic en una fila
+    const sendDataRow = (rowData) => {
+        // Accede a los datos necesarios del registro (rowData) y llama a tu método
+        const {IdInstitutoOK, IdProdServOK} = rowData.original;
+        // Mostrar en consola los datos del registro
+        console.log("IdInstitutoOK: ", IdInstitutoOK);
+        console.log("IdProdServOK: ", IdProdServOK);
+        // Actualizar el estado de los datos seleccionados
+        setDatosSeleccionados({IdInstitutoOK, IdProdServOK});
+    };
 
     const handleEditClick = (table) => {
       const selectedRows = table.getSelectedRowModel().flatRows;
@@ -90,8 +101,13 @@ const ProductsTable = () => {
                 data={ProdServsData}
                 state={{isLoading: loadingTable}}
                 initialState={{ density: "compact", showGlobalFilter: true }}
-                enableRowSelection
-                renderTopToolbarCustomActions={({ table }) => (
+                enableRowSelection={true}
+                muiTableBodyRowProps={({row}) => ({
+                    onClick: row.getToggleSelectedHandler(),
+                    onClickCapture: () => sendDataRow(row),
+                    sx: {cursor: 'pointer'},
+                })}
+                renderTopToolbarCustomActions={() => (
                     <>
                         {/* ------- ACTIONS TOOLBAR INIT ------ */}
                         <Stack direction="row" sx={{ m: 1 }}>
