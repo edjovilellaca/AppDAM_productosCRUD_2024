@@ -10,7 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 //FIC: DB
 import {GetEstatus} from '../../services/remote/get/GetEstatus.jsx';
 //FIC: Modals
-//import AddEstatusModal from "../modals/AddEstatusModal.jsx";
+import AddEstatusModal from "../modals/AddEstatusModal";
 
 
 //FIC: Table - FrontEnd.
@@ -22,8 +22,8 @@ const EstatusTable = ({datosSeleccionados}) => {
     const [ProductData, setProductData] = useState([]);
 
     //FIC: controlar el estado que muestra u oculta la modal de nuevo Producto.
-    const [AddProductShowModal, setAddProductShowModal] = useState(false);
-
+    const [AddEstatusShowModal, setAddEstatusShowModal] = useState(false);
+    
     async function fetchData() {
 
         try {
@@ -79,7 +79,7 @@ const EstatusTable = ({datosSeleccionados}) => {
                             <Stack direction="row" sx={{ m: 1 }}>
                                 <Box>
                                     <Tooltip title="Agregar">
-                                    <IconButton onClick={() => setAddProductShowModal(true)}>
+                                    <IconButton onClick={() => {setAddEstatusShowModal(true)}}>
                                         <AddCircleIcon />
                                     </IconButton>
                                     </Tooltip>
@@ -105,16 +105,14 @@ const EstatusTable = ({datosSeleccionados}) => {
                     )}
                 />
             </Box>
-            {/* M O D A L E S 
-            <Dialog open={AddProductShowModal}>
-                <AddEstatusModal
-                    AddProductShowModal={AddProductShowModal}
-                    setAddProductShowModal={setAddProductShowModal}
-                    datosSeleccionados={datosSeleccionados}
-                    onClose={() => setAddProductShowModal(false)}
-                />
-            </Dialog>
-            */}
+            {/* M O D A L E S */} {/* AddEstatusShowModal setAddEstatusShowModal */}
+            <Dialog open={AddEstatusShowModal} onClose={() => setAddEstatusShowModal(false)}>
+              <AddEstatusModal
+                  AddEstatusShowModal={AddEstatusShowModal}
+                  prodKey={datosSeleccionados.IdProdServOK}
+                  setAddEstatusShowModal={setAddEstatusShowModal}
+                  onEstatusAdded={fetchData}/>
+          </Dialog>
         </Box>
     );
 };
