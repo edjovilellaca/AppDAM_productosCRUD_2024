@@ -73,6 +73,12 @@ const EstatusTable = ({datosSeleccionados}) => {
                     data={ProductData}
                     state={{isLoading: loadingTable}}
                     initialState={{density: "compact", showGlobalFilter: true}}
+                    enableRowSelection={true}
+                    muiTableBodyRowProps={({row}) => ({
+                        onClick: row.getToggleSelectedHandler(),
+                        onClickCapture: () => sendDataRow(row),
+                        sx: {cursor: 'pointer'},
+                    })}
                     renderTopToolbarCustomActions={({table}) => (
                         <>
                             {/* ------- ACTIONS TOOLBAR INIT ------ */}
