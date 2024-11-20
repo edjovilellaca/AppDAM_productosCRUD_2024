@@ -84,7 +84,7 @@ const InfoAdTable = ({datosSeleccionados}) => {
                     data={ProductData}
                     state={{isLoading: loadingTable}}
                     initialState={{density: "compact", showGlobalFilter: true}}
-                    renderTopToolbarCustomActions={() => (
+                    renderTopToolbarCustomActions={({table}) => (
                         <>
                             {/* ------- ACTIONS TOOLBAR INIT ------ */}
                             <Stack direction="row" sx={{ m: 1 }}>

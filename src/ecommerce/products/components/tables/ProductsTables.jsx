@@ -107,7 +107,7 @@ const ProductsTable = ({setDatosSeleccionados, datosSeleccionados}) => {
                     onClickCapture: () => sendDataRow(row),
                     sx: {cursor: 'pointer'},
                 })}
-                renderTopToolbarCustomActions={() => (
+                renderTopToolbarCustomActions={({table}) => (
                     <>
                         {/* ------- ACTIONS TOOLBAR INIT ------ */}
                         <Stack direction="row" sx={{ m: 1 }}>
