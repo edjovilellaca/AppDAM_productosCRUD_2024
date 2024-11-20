@@ -2,6 +2,7 @@ html,
 body {
   display:flex;
   background-color: #121212;
+  overflow: hidden;
 }
 head {
    bottom: 0px; 
@@ -23,7 +24,6 @@ head {
     height: 100%;;
     width: 100%;
     border-radius: 20px;
-    padding: 0rem 1rem;
     /* FIC: quitar */
     background-color: #2bee04;
   }
@@ -34,6 +34,7 @@ head {
     width: 100%;
     bottom: 0 ;
     right: 0;
+    padding: .5rem 0;
     /* FIC: quitar */
     background-color:#42f486
   }
@@ -43,7 +44,6 @@ head {
     height: 90%;
     width: 100%;
     border-radius: 20px;
-    padding: 0rem 1rem;
     /* FIC: quitar */
     background-color: #eeb004;
   }
@@ -61,7 +61,7 @@ head {
   #detail {
     flex: 1;
     padding: 0rem 1rem;
-    width: 100%;
+    width: 98%;
     height: 100%;
   }
   
