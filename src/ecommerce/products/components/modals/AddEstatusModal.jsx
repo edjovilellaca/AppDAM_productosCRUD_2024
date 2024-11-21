@@ -9,7 +9,6 @@ import { EstatusValues } from "../../helpers/estatusValues";
 import { AddOneEstatus } from "../../services/remote/post/AddOneEstatus";
 
 const AddEstatusModal = ({AddEstatusShowModal, setAddEstatusShowModal, onEstatusAdded, prodKey}) => {
-    console.log('prododododod: ', prodKey);
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
     const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
     const [Loading, setLoading] = useState(false);

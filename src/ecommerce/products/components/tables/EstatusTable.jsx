@@ -11,6 +11,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {GetEstatus} from '../../services/remote/get/GetEstatus.jsx';
 //FIC: Modals
 import AddEstatusModal from "../modals/AddEstatusModal";
+import { delOneSubProduct } from "../../services/remote/del/delOneSubProduct.jsx";
 import UpdateEstatusModal from "../modals/UpdateEstatusModal.jsx";
 
 
@@ -46,6 +47,24 @@ const EstatusTable = ({setDatosSeleccionados, datosSeleccionados}) => {
         }
     }
 
+    const fetchDataa = async () => {
+      setLoadingTable(true);
+      try {
+        if (datosSeleccionados.IdProdServOK === "0") {
+            setLoadingTable(false);
+            return;
+        }
+        
+        const OneProductData = await GetEstatus(datosSeleccionados.IdProdServOK, datosSeleccionados.IdInstitutoOK);
+
+        setProductData(OneProductData);
+        setLoadingTable(false);
+      } catch (error) {
+          console.error("Error al obtener productos:", error);
+      }
+      setLoadingTable(false);
+    };
+
     useEffect(() => {
         fetchData();
     }, []);
@@ -60,6 +79,20 @@ const EstatusTable = ({setDatosSeleccionados, datosSeleccionados}) => {
         setSelectedEstatus(estatus);
         setUpdateEstatusShowModal(true);
     };
+
+    const handleDelClick = (table) => {
+        const selectedRows = table.getSelectedRowModel().flatRows;
+        if (selectedRows.length === 0) {
+            alert("Selecciona una fila para borrar.");
+            return;
+        }
+        const product = selectedRows[0]?.original;
+        const IdTipoEstatusOK = product[Object.keys(product)[1]];
+        
+        console.log('producttable: ', selectedRows);
+        delOneSubProduct(datosSeleccionados.IdProdServOK, IdTipoEstatusOK);
+        fetchDataa();
+      };
 
     //FIC: Columns Table Definition.
     const ProductsColumns = [
