@@ -11,10 +11,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {GetEstatus} from '../../services/remote/get/GetEstatus.jsx';
 //FIC: Modals
 import AddEstatusModal from "../modals/AddEstatusModal";
+import UpdateEstatusModal from "../modals/UpdateEstatusModal.jsx";
 
 
 //FIC: Table - FrontEnd.
-const EstatusTable = ({datosSeleccionados}) => {
+const EstatusTable = ({setDatosSeleccionados, datosSeleccionados}) => {
     //FIC: controlar el estado del indicador (loading).
     const [loadingTable, setLoadingTable] = useState(true);
 
@@ -23,7 +24,10 @@ const EstatusTable = ({datosSeleccionados}) => {
 
     //FIC: controlar el estado que muestra u oculta la modal de nuevo Producto.
     const [AddEstatusShowModal, setAddEstatusShowModal] = useState(false);
-    
+    const [UpdateEstatusShowModal, setUpdateEstatusShowModal] = useState(false);
+
+    const [selectedEstatus, setSelectedEstatus] = useState(null);
+
     async function fetchData() {
 
         try {
@@ -45,6 +49,17 @@ const EstatusTable = ({datosSeleccionados}) => {
     useEffect(() => {
         fetchData();
     }, []);
+
+    const handleEditClick = (table) => {
+        const selectedRows = table.getSelectedRowModel().flatRows;
+        if (selectedRows.length === 0) {
+            alert("Selecciona una fila para editar.");
+            return;
+        }
+        const estatus = selectedRows[0]?.original;
+        setSelectedEstatus(estatus);
+        setUpdateEstatusShowModal(true);
+    };
 
     //FIC: Columns Table Definition.
     const ProductsColumns = [
@@ -76,7 +91,6 @@ const EstatusTable = ({datosSeleccionados}) => {
                     enableRowSelection={true}
                     muiTableBodyRowProps={({row}) => ({
                         onClick: row.getToggleSelectedHandler(),
-                        onClickCapture: () => sendDataRow(row),
                         sx: {cursor: 'pointer'},
                     })}
                     renderTopToolbarCustomActions={({table}) => (
@@ -119,6 +133,16 @@ const EstatusTable = ({datosSeleccionados}) => {
                   setAddEstatusShowModal={setAddEstatusShowModal}
                   onEstatusAdded={fetchData}/>
           </Dialog>
+
+          <Dialog open={UpdateEstatusShowModal} onClose={() => setUpdateEstatusShowModal(false)}>
+              <UpdateEstatusModal
+                  UpdateEstatusShowModal={UpdateEstatusShowModal}
+                  setUpdateEstatusShowModal={setUpdateEstatusShowModal}
+                  estatusData={selectedEstatus}
+                  onEstatusUpdated={fetchData}
+                  prodKey={datosSeleccionados.IdProdServOK}/>
+          </Dialog>
+
         </Box>
     );
 };

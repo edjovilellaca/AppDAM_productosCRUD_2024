@@ -24,7 +24,7 @@ const Products = () => {
                 <ProductsTable setDatosSeleccionados={setDatosSeleccionados} datosSeleccionados={datosSeleccionados}/>}
 
             {/* Página de negocios */}
-            {currentTabInPrincipalTab === "ESTATUS" && <EstatusTable datosSeleccionados={datosSeleccionados}/>}
+            {currentTabInPrincipalTab === "ESTATUS" && <EstatusTable setDatosSeleccionados={setDatosSeleccionados} datosSeleccionados={datosSeleccionados}/>}
 
             {/*Pagina de presenta*/}
             {currentTabInPrincipalTab === "PRESENTACIONES" && <PresentaTab datosSeleccionados={datosSeleccionados}/>}
