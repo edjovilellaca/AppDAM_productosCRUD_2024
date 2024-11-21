@@ -88,6 +88,7 @@ const ProductsTable = ({setDatosSeleccionados, datosSeleccionados}) => {
       }
       const product = selectedRows[0]?.original;
       const ProdPK = product[Object.keys(product)[2]];
+
       console.log('ProdPK: ', ProdPK);
       delOneProduct(ProdPK);
       fetchData();
@@ -161,15 +162,3 @@ const ProductsTable = ({setDatosSeleccionados, datosSeleccionados}) => {
 export default ProductsTable;
 
 
-/* useEffect(() => {
-      async function fetchData() {
-        try {
-            const AllProductsData = await getAllProducts();
-            setProdServData(AllProductsData);
-            setLoadingTable(false);
-        } catch (error) {
-          console.error("Error al obtener productos:", error);
-        }
-      }
-      fetchData();
-}, []); */
