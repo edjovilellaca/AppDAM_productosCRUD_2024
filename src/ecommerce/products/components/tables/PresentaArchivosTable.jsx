@@ -133,7 +133,7 @@ const PresentaArchivosTable = ({datosSeleccionados, datosSecSubdocumentoPresenta
                         sx: {cursor: 'pointer'},
                     })}
                     /*setDatosSubDocArchivos*/
-                    renderTopToolbarCustomActions={() => (
+                    renderTopToolbarCustomActions={({table}) => (
                         <>
                             {/* ------- ACTIONS TOOLBAR INIT ------ */}
                             <Stack direction="row" sx={{ m: 1 }}>

@@ -88,6 +88,7 @@ const ProductsTable = ({setDatosSeleccionados, datosSeleccionados}) => {
       }
       const product = selectedRows[0]?.original;
       const ProdPK = product[Object.keys(product)[2]];
+
       console.log('ProdPK: ', ProdPK);
       delOneProduct(ProdPK);
       fetchData();

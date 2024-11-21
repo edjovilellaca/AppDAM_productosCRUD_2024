@@ -32,12 +32,6 @@ const ProductsNavTab = ({currentRowInProductsTab, setCurrentNameTabInPrincipalTa
                                            
         }
 
-        //FIC: cambiamos el estado de la tap de business a un true para indicar
-        //que el usuario ya hizo click en esta pestaña y entonces se despliegue el 
-        //BusinessNavTap con los tab pages de este nivel (subdocumento) que contiene 
-        //mas subdocumentos como: negocio, info adicional, archivos, telefonos, etc.
-        //if (e.target.innerText.toUpperCase() == "NEGOCIOS") setBusinessTabInPrincipalTabIsSelected(true);
-
     };
 
     return (
