@@ -29,27 +29,10 @@ const EstatusTable = ({setDatosSeleccionados, datosSeleccionados}) => {
 
     const [selectedEstatus, setSelectedEstatus] = useState(null);
 
-    async function fetchData() {
-
-        try {
-
-            if (datosSeleccionados.IdProdServOK === "0") {
-                setLoadingTable(false);
-                return;
-            }
-            
-            const OneProductData = await GetEstatus(datosSeleccionados.IdProdServOK, datosSeleccionados.IdInstitutoOK);
-
-            setProductData(OneProductData);
-            setLoadingTable(false);
-        } catch (error) {
-            console.error("Error al obtener los productos en useEffect de EstatusTable:", error);
-        }
-    }
-
-    const fetchDataa = async () => {
+    const fetchData = async () => {
       setLoadingTable(true);
       try {
+
         if (datosSeleccionados.IdProdServOK === "0") {
             setLoadingTable(false);
             return;
@@ -59,10 +42,9 @@ const EstatusTable = ({setDatosSeleccionados, datosSeleccionados}) => {
 
         setProductData(OneProductData);
         setLoadingTable(false);
-      } catch (error) {
-          console.error("Error al obtener productos:", error);
-      }
-      setLoadingTable(false);
+    } catch (error) {
+        console.error("Error al obtener los productos en useEffect de EstatusTable:", error);
+    }
     };
 
     useEffect(() => {
@@ -91,7 +73,7 @@ const EstatusTable = ({setDatosSeleccionados, datosSeleccionados}) => {
         
         console.log('producttable: ', selectedRows);
         delOneSubProduct(datosSeleccionados.IdProdServOK, IdTipoEstatusOK);
-        fetchDataa();
+        fetchData();
       };
 
     //FIC: Columns Table Definition.

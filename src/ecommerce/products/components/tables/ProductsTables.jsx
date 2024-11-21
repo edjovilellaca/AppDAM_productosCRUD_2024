@@ -14,6 +14,11 @@ import { delOneProduct } from '../../services/remote/del/delOneProduct';
 
 const ProdServColumns = [
     {
+        accessorKey: "IdInstitutoOK",
+        header: "ID INSTITUTO OK",
+        size: 30 // small column
+    },
+    {
         accessorKey: "IdProdServOK",
         header: "ID PRODSERV OK",
         size: 30 // small column

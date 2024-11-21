@@ -88,6 +88,13 @@ const PresentaArchivosTable = ({datosSeleccionados, datosSecSubdocumentoPresenta
             accessorKey: "RutaArchivo",
             header: "RutaArchivo",
             size: 30, //small column
+            maxSize: 30,
+        },
+        {
+            accessorKey: "Path",
+            header: "Path",
+            size: 30, //small column
+            maxSize: 10,
         },
         {
             accessorKey: "IdTipoArchivoOK",

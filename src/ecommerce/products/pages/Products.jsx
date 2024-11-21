@@ -5,7 +5,6 @@ import ProductsTable from "../components/tables/ProductsTables.jsx";
 import PresentaTab from "../components/tabs/PresentaTab.jsx";
 import EstatusTable from "../components/tables/EstatusTable.jsx";
 import InfoAdTable from "../components/tables/InfoAdTable.jsx";
-import NegociosTable from "../components/tables/NegociosTable.jsx";
 
 const Products = () => {
     const [currentRowInProductsTab, setCurrentRowInProductsTab] = useState(0);
@@ -28,9 +27,6 @@ const Products = () => {
 
             {/*Pagina de presenta*/}
             {currentTabInPrincipalTab === "PRESENTACIONES" && <PresentaTab datosSeleccionados={datosSeleccionados}/>}
-
-            {/*Pagina de Negocios*/}
-            {currentTabInPrincipalTab === "NEGOCIOS" && <NegociosTable datosSeleccionados={datosSeleccionados}/>}
 
             {/*Página de Información adicional*/}
             {currentTabInPrincipalTab === "INFO_AD" &&
