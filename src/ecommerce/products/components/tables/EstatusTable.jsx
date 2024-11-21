@@ -30,14 +30,11 @@ const EstatusTable = ({setDatosSeleccionados, datosSeleccionados}) => {
     const [selectedEstatus, setSelectedEstatus] = useState(null);
 
     async function fetchData() {
-
         try {
-
             if (datosSeleccionados.IdProdServOK === "0") {
                 setLoadingTable(false);
                 return;
             }
-            
             const OneProductData = await GetEstatus(datosSeleccionados.IdProdServOK, datosSeleccionados.IdInstitutoOK);
 
             setProductData(OneProductData);
@@ -48,22 +45,21 @@ const EstatusTable = ({setDatosSeleccionados, datosSeleccionados}) => {
     }
 
     const fetchDataa = async () => {
-      setLoadingTable(true);
-      try {
-        if (datosSeleccionados.IdProdServOK === "0") {
-            setLoadingTable(false);
-            return;
+        setLoadingTable(true);
+        try {
+          if (datosSeleccionados.IdProdServOK === "0") {
+              setLoadingTable(false);
+              return;
+          }
+          
+          const OneProductData = await GetEstatus(datosSeleccionados.IdProdServOK, datosSeleccionados.IdInstitutoOK);
+          setProductData(OneProductData);
+          setLoadingTable(false);
+        } catch (error) {
+            console.error("Error al obtener productos:", error);
         }
-        
-        const OneProductData = await GetEstatus(datosSeleccionados.IdProdServOK, datosSeleccionados.IdInstitutoOK);
-
-        setProductData(OneProductData);
         setLoadingTable(false);
-      } catch (error) {
-          console.error("Error al obtener productos:", error);
-      }
-      setLoadingTable(false);
-    };
+      };
 
     useEffect(() => {
         fetchData();
