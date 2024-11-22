@@ -15,25 +15,23 @@ const AddProductModal = ({AddProductShowModal, setAddProductShowModal, onProduct
 
     const formik = useFormik({
         initialValues: {
+            IdInstitutoOK: "",
             IdProdServOK: "",
             IdProdServBK: "",
+            CodigoBarras: "",
             DesProdServ: "",
-            Matriz: "",
-            IdProdServMaOK: "",
-            IdProdServMaBK: "",
+            Indice: "",
         },
         validationSchema: Yup.object({
+            IdInstitutoOK: Yup.string().required("Campo requerido"),
             IdProdServOK: Yup.string().required("Campo requerido"),
             IdProdServBK: Yup.string().required("Campo requerido"),
-            DesProdServ: Yup.string().required("Campo requerido"),
-            Matriz: Yup.string()
+            CodigoBarras: Yup.string()
                 .required("Campo requerido")
-                .max(1, 'Solo se permite una letra')
-                .matches(/^[NS]+$/, 'Solo se permiten letras S/N'),
-            IdProdServMaOK: Yup.string()
-                .required("Campo requerido")
-                .matches(/^[a-zA-Z0-9-]+$/, 'Solo se permiten caracteres alfanuméricos y el simbolo "-"'),
-            IdProdServMaBK: Yup.string().required("Campo requerido"),
+                .matches(/^[0-9]+$/, 'Solo se permiten numeros'),
+            DesProdServ: Yup.string()
+                .required("Campo requerido"),
+            Indice: Yup.string().required("Campo requerido"),
         }),
         
         onSubmit: async (values) => {
@@ -88,6 +86,14 @@ const AddProductModal = ({AddProductShowModal, setAddProductShowModal, onProduct
                 >
                     {/* FIC: Campos de captura o selección */}
                     <TextField
+                        id="IdInstitutoOK"
+                        label="IdInstitutoOK*"
+                        value={formik.values.IdInstitutoOK}
+                        {...commonTextFieldProps}
+                        error={ formik.touched.IdInstitutoOK && Boolean(formik.errors.IdInstitutoOK) }
+                        helperText={ formik.touched.IdInstitutoOK && formik.errors.IdInstitutoOK }
+                    />
+                    <TextField
                         id="IdProdServOK"
                         label="IdProdServOK*"
                         value={formik.values.IdProdServOK}
@@ -104,6 +110,14 @@ const AddProductModal = ({AddProductShowModal, setAddProductShowModal, onProduct
                         helperText={ formik.touched.IdProdServBK && formik.errors.IdProdServBK }
                     />
                     <TextField
+                        id="CodigoBarras"
+                        label="CodigoBarras*"
+                        value={formik.values.Matriz}
+                        {...commonTextFieldProps}
+                        error={ formik.touched.Matriz && Boolean(formik.errors.Matriz) }
+                        helperText={ formik.touched.Matriz && formik.errors.Matriz }
+                    />
+                    <TextField
                         id="DesProdServ"
                         label="DesProdServ*"
                         value={formik.values.DesProdServ}
@@ -112,28 +126,12 @@ const AddProductModal = ({AddProductShowModal, setAddProductShowModal, onProduct
                         helperText={ formik.touched.DesProdServ && formik.errors.DesProdServ }
                     />
                     <TextField
-                        id="Matriz"
-                        label="Matriz*"
-                        value={formik.values.Matriz}
+                        id="Indice"
+                        label="Indice*"
+                        value={formik.values.Indice}
                         {...commonTextFieldProps}
-                        error={ formik.touched.Matriz && Boolean(formik.errors.Matriz) }
-                        helperText={ formik.touched.Matriz && formik.errors.Matriz }
-                    />
-                    <TextField
-                        id="IdProdServMaOK"
-                        label="IdProdServMaOK*"
-                        value={formik.values.IdProdServMaOK}
-                        {...commonTextFieldProps}
-                        error={ formik.touched.IdProdServMaOK && Boolean(formik.errors.IdProdServMaOK) }
-                        helperText={ formik.touched.IdProdServMaOK && formik.errors.IdProdServMaOK }
-                    />
-                    <TextField
-                        id="IdProdServMaBK"
-                        label="IdProdServMaBK*"
-                        value={formik.values.IdProdServMaBK}
-                        {...commonTextFieldProps}
-                        error={ formik.touched.IdProdServMaBK && Boolean(formik.errors.IdProdServMaBK) }
-                        helperText={ formik.touched.IdProdServMaBK && formik.errors.IdProdServMaBK }
+                        error={ formik.touched.Indice && Boolean(formik.errors.Indice) }
+                        helperText={ formik.touched.Indice && formik.errors.Indice }
                     />
                 </DialogContent>
                 {/* FIC: Aqui van las acciones del usuario como son las alertas o botones */}

@@ -61,7 +61,7 @@ const ProductsTable = ({setDatosSeleccionados, datosSeleccionados}) => {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [datosSeleccionados]);
 
     // Función para manejar el clic en una fila
     const sendDataRow = (rowData) => {
@@ -85,7 +85,7 @@ const ProductsTable = ({setDatosSeleccionados, datosSeleccionados}) => {
       setUpdateProductShowModal(true);
     };
 
-    const handleDelClick = (table) => {
+    const handleDelClick = async (table) => {
       const selectedRows = table.getSelectedRowModel().flatRows;
       if (selectedRows.length === 0) {
           alert("Selecciona una fila para borrar.");
@@ -95,8 +95,8 @@ const ProductsTable = ({setDatosSeleccionados, datosSeleccionados}) => {
       const ProdPK = product[Object.keys(product)[2]];
 
       console.log('ProdPK: ', ProdPK);
-      delOneProduct(ProdPK);
-      fetchData();
+      await delOneProduct(ProdPK);
+      await fetchData();
     };
 
     return (

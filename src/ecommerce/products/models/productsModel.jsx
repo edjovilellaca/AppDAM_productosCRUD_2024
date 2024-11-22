@@ -2,12 +2,12 @@ import { getDetailRow } from "../helpers/Utils";
 
 export function ProductModel() {
     let ProdServ = {
-        IdInstitutoOK: { type: String},
+        IdInstitutoOK: { type: String },
         IdProdServOK: { type: String },
         IdProdServBK: { type: String },
         CodigoBarras: { type: String },
         DesProdServ: { type: String },
-        Indice: { type: String },
+        Indice: { type: String }/* ,
         estatus: [
             {
                 IdTipoEstatusOK: { type: String },
@@ -62,7 +62,7 @@ export function ProductModel() {
                 IdTipoSeccionOK: { type: String },
                 Secuencia: { type: Number }
             }
-        ]
+        ] */
     };
     return ProdServ
 };

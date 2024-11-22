@@ -11,7 +11,7 @@ export function GetInfoAd(IdProdServOK, IdInstitutoOK) {
                     console.info("🛈 No se encontraron documentos en <<cat_prod_serv>>");
                     resolve([]);
                 } else{
-                    console.log("informacion: "+data.info_ad);
+                    
                     resolve(data.info_ad); // Resuelve la promesa y hace una copia profunda
                 }
             })

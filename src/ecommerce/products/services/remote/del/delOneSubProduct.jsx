@@ -4,7 +4,7 @@ export function delOneSubProduct(id, idSubDoc) {
     console.log("<<EJECUTA>> API <<delOneSubProduct>> Requiere:", id, idSubDoc)
     return new Promise((resolve, reject) => {
         console.log('Antes del post axios');
-      axios.delete(`http://localhost:3020/api/v1/prod-serv/${id}/cat_prod_serv_estatus/${idSubDoc}`)
+      axios.delete(`http://localhost:3020/api/v1/prod-serv/${id}/estatus/${idSubDoc}`)
         .then((response) => {
           console.log("<<RESPONSE>> delOneSubProduct ", id, idSubDoc)
           const data = response.data;

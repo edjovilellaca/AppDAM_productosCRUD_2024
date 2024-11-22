@@ -49,7 +49,7 @@ const EstatusTable = ({setDatosSeleccionados, datosSeleccionados}) => {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [datosSeleccionados]);
 
     const handleEditClick = (table) => {
         const selectedRows = table.getSelectedRowModel().flatRows;
@@ -62,18 +62,18 @@ const EstatusTable = ({setDatosSeleccionados, datosSeleccionados}) => {
         setUpdateEstatusShowModal(true);
     };
 
-    const handleDelClick = (table) => {
+    const handleDelClick = async (table) => {
         const selectedRows = table.getSelectedRowModel().flatRows;
         if (selectedRows.length === 0) {
             alert("Selecciona una fila para borrar.");
             return;
         }
         const product = selectedRows[0]?.original;
-        const IdTipoEstatusOK = product[Object.keys(product)[1]];
+        const IdTipoEstatusOK = product[Object.keys(product)[0]];
         
         console.log('producttable: ', selectedRows);
-        delOneSubProduct(datosSeleccionados.IdProdServOK, IdTipoEstatusOK);
-        fetchData();
+        await delOneSubProduct(datosSeleccionados.IdProdServOK, IdTipoEstatusOK);
+        await fetchData();
       };
 
     //FIC: Columns Table Definition.

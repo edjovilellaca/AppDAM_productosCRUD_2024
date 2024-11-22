@@ -14,12 +14,12 @@ const UpdateProductModal = ({ UpdateProductShowModal, setUpdateProductShowModal,
 
     const formik = useFormik({
         initialValues: {
+            IdInstitutoOK: productData?.IdInstitutoOK || "",
             IdProdServOK: productData?.IdProdServOK || "",
             IdProdServBK: productData?.IdProdServBK || "",
+            CodigoBarras: productData?.CodigoBarras || "",
             DesProdServ: productData?.DesProdServ || "",
-            Matriz: productData?.Matriz || "",
-            IdProdServMaOK: productData?.IdProdServMaOK || "",
-            IdProdServMaBK: productData?.IdProdServMaBK || "",
+            Indice: productData?.Indice || "",
         },
         validationSchema: Yup.object({
             IdProdServOK: Yup.string(),
@@ -69,54 +69,54 @@ const UpdateProductModal = ({ UpdateProductShowModal, setUpdateProductShowModal,
                     </Typography>
                 </DialogTitle>
                 <DialogContent sx={{ display: "flex", flexDirection: "column" }} dividers>
+                <TextField
+                        id="IdInstitutoOK"
+                        label="IdInstitutoOK*"
+                        value={formik.values.IdInstitutoOK}
+                        {...commonTextFieldProps}
+                        error={ formik.touched.IdInstitutoOK && Boolean(formik.errors.IdInstitutoOK) }
+                        helperText={ formik.touched.IdInstitutoOK && formik.errors.IdInstitutoOK }
+                        disabled
+                    />
                     <TextField
                         id="IdProdServOK"
                         label="IdProdServOK*"
                         value={formik.values.IdProdServOK}
                         {...commonTextFieldProps}
-                        error={formik.touched.IdProdServOK && Boolean(formik.errors.IdProdServOK)}
-                        helperText={formik.touched.IdProdServOK && formik.errors.IdProdServOK}
-                        disabled // No editable porque es clave primaria
+                        error={ formik.touched.IdProdServOK && Boolean(formik.errors.IdProdServOK) }
+                        helperText={ formik.touched.IdProdServOK && formik.errors.IdProdServOK }
                     />
                     <TextField
                         id="IdProdServBK"
                         label="IdProdServBK*"
                         value={formik.values.IdProdServBK}
                         {...commonTextFieldProps}
-                        error={formik.touched.IdProdServBK && Boolean(formik.errors.IdProdServBK)}
-                        helperText={formik.touched.IdProdServBK && formik.errors.IdProdServBK}
+                        error={ formik.touched.IdProdServBK && Boolean(formik.errors.IdProdServBK) }
+                        helperText={ formik.touched.IdProdServBK && formik.errors.IdProdServBK }
+                    />
+                    <TextField
+                        id="CodigoBarras"
+                        label="CodigoBarras*"
+                        value={formik.values.Matriz}
+                        {...commonTextFieldProps}
+                        error={ formik.touched.Matriz && Boolean(formik.errors.Matriz) }
+                        helperText={ formik.touched.Matriz && formik.errors.Matriz }
                     />
                     <TextField
                         id="DesProdServ"
                         label="DesProdServ*"
                         value={formik.values.DesProdServ}
                         {...commonTextFieldProps}
-                        error={formik.touched.DesProdServ && Boolean(formik.errors.DesProdServ)}
-                        helperText={formik.touched.DesProdServ && formik.errors.DesProdServ}
+                        error={ formik.touched.DesProdServ && Boolean(formik.errors.DesProdServ) }
+                        helperText={ formik.touched.DesProdServ && formik.errors.DesProdServ }
                     />
                     <TextField
-                        id="Matriz"
-                        label="Matriz*"
-                        value={formik.values.Matriz}
+                        id="Indice"
+                        label="Indice*"
+                        value={formik.values.Indice}
                         {...commonTextFieldProps}
-                        error={formik.touched.Matriz && Boolean(formik.errors.Matriz)}
-                        helperText={formik.touched.Matriz && formik.errors.Matriz}
-                    />
-                    <TextField
-                        id="IdProdServMaOK"
-                        label="IdProdServMaOK*"
-                        value={formik.values.IdProdServMaOK}
-                        {...commonTextFieldProps}
-                        error={formik.touched.IdProdServMaOK && Boolean(formik.errors.IdProdServMaOK)}
-                        helperText={formik.touched.IdProdServMaOK && formik.errors.IdProdServMaOK}
-                    />
-                    <TextField
-                        id="IdProdServMaBK"
-                        label="IdProdServMaBK*"
-                        value={formik.values.IdProdServMaBK}
-                        {...commonTextFieldProps}
-                        error={formik.touched.IdProdServMaBK && Boolean(formik.errors.IdProdServMaBK)}
-                        helperText={formik.touched.IdProdServMaBK && formik.errors.IdProdServMaBK}
+                        error={ formik.touched.Indice && Boolean(formik.errors.Indice) }
+                        helperText={ formik.touched.Indice && formik.errors.Indice }
                     />
                 </DialogContent>
                 <DialogActions>

@@ -2,13 +2,11 @@ import {  ProductModel } from "../models/productsModel";
 
 export const ProductValues = (values)=>{
    let Product =  ProductModel()
+   Product.IdInstitutoOK=values.IdInstitutoOK,
    Product.IdProdServOK=values.IdProdServOK,
-   Product.IdProdServPK=values.IdProdServOK,
    Product.IdProdServBK=values.IdProdServBK,
-   Product.IdProdServMaOK=values.IdProdServMaOK,
+   Product.CodigoBarras=values.CodigoBarras,
    Product.DesProdServ=values.DesProdServ,
-   Product.Alias=values.Alias,
-   Product.Matriz=values.Matriz,
-   Product.IdProdServMaBK=values.IdProdServMaBK
+   Product.Indice=values.Indice
    return Product
 }

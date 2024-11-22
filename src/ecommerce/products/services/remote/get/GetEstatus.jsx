@@ -11,8 +11,7 @@ export function GetEstatus(IdProdServOK, IdInstitutoOK) {
                     console.info("🛈 No se encontraron documentos en <<cat_prod_serv>>");
                     resolve([]);
                 } else {
-                    //resolve(data.estatus); // Para el documentote asi bien gigante que tiene todo de todo, 4x4, motor 8v
-                    resolve(data.cat_prod_serv_estatus);
+                    resolve(data.estatus);
                 }
             })
             .catch((error) => {
