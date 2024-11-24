@@ -9,7 +9,7 @@ import InfoAdTable from "../components/tables/InfoAdTable.jsx";
 const Products = () => {
     const [currentRowInProductsTab, setCurrentRowInProductsTab] = useState(0);
     const [currentTabInPrincipalTab, setCurrentTabInPrincipalTab] = useState("PRODUCTOS");
-    const [datosSeleccionados, setDatosSeleccionados] = useState({IdInstitutoOK: "0", IdProdServOK: "0"});
+    const [datosSeleccionados, setDatosSeleccionados] = useState({IdInstitutoOK: "0", IdProdServOK: "0", IdProdServBK:"0"});
 
     return (
         <Box>

@@ -7,7 +7,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
 
-import {getAllProducts} from '../../services/remote/get/getAllProducts';
+import { getAllProducts } from '../../services/remote/get/getAllProducts';
 import AddProductModal from "../modals/AddProductModal";
 import UpdateProductModal from '../modals/UpdateProductModal';
 import { delOneProduct } from '../../services/remote/del/delOneProduct';
@@ -49,29 +49,30 @@ const ProductsTable = ({setDatosSeleccionados, datosSeleccionados}) => {
     const [selectedProduct, setSelectedProduct] = useState(null);
 
     const fetchData = async () => {
-      setLoadingTable(true);
-      try {
-          const AllProductsData = await getAllProducts();
-          setProdServData(AllProductsData);
-      } catch (error) {
-          console.error("Error al obtener productos:", error);
-      }
-      setLoadingTable(false);
+        setLoadingTable(true);
+        try {
+            const AllProductsData = await getAllProducts();
+            setProdServData([...AllProductsData]);
+        } catch (error) {
+            console.error("Error al obtener productos:", error);
+        }
+        setLoadingTable(false);
     };
 
     useEffect(() => {
         fetchData();
-    }, [datosSeleccionados]);
+    }, []);
 
     // Función para manejar el clic en una fila
     const sendDataRow = (rowData) => {
         // Accede a los datos necesarios del registro (rowData) y llama a tu método
-        const {IdInstitutoOK, IdProdServOK} = rowData.original;
+        const {IdInstitutoOK, IdProdServOK, IdProdServBK} = rowData.original;
         // Mostrar en consola los datos del registro
         console.log("IdInstitutoOK: ", IdInstitutoOK);
         console.log("IdProdServOK: ", IdProdServOK);
+        console.log("IdProdServBK: ", IdProdServBK);
         // Actualizar el estado de los datos seleccionados
-        setDatosSeleccionados({IdInstitutoOK, IdProdServOK});
+        setDatosSeleccionados({IdInstitutoOK, IdProdServOK, IdProdServBK});
     };
 
     const handleEditClick = (table) => {

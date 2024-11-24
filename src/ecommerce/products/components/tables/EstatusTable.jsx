@@ -40,7 +40,7 @@ const EstatusTable = ({setDatosSeleccionados, datosSeleccionados}) => {
         
         const OneProductData = await GetEstatus(datosSeleccionados.IdProdServOK, datosSeleccionados.IdInstitutoOK);
 
-        setProductData(OneProductData);
+        setProductData([...OneProductData]);
         setLoadingTable(false);
     } catch (error) {
         console.error("Error al obtener los productos en useEffect de EstatusTable:", error);
@@ -49,7 +49,7 @@ const EstatusTable = ({setDatosSeleccionados, datosSeleccionados}) => {
 
     useEffect(() => {
         fetchData();
-    }, [datosSeleccionados]);
+    }, []);
 
     const handleEditClick = (table) => {
         const selectedRows = table.getSelectedRowModel().flatRows;

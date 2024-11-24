@@ -20,14 +20,16 @@ function getDatosFiltrados(OneProductData, datosSecSubdocumentoPresenta) {
         elemento.IdPresentaOK === datosSecSubdocumentoPresenta.IdPresentaOK 
     ));
 
-    // Obtener cat_prod_serv_info_vta del primer elemento filtrado (si existe)
+    console.log('Estatus resultadoFiltrado: ', resultadoFiltrado);
+
+    // Obtener cat_prod_serv_estatus del primer elemento filtrado (si existe)
     return resultadoFiltrado.length > 0
-        ? resultadoFiltrado[0].info_ad
+        ? resultadoFiltrado[0].estatus
         : null;
 }
 
 //FIC: Table - FrontEnd.
-const PresentaInfoAdTable = ({datosSeleccionados, datosSecSubdocumentoPresenta}) => {
+const PresentaEstatus = ({datosSeleccionados, datosSecSubdocumentoPresenta}) => {
     //FIC: controlar el estado del indicador (loading).
     const [loadingTable, setLoadingTable] = useState(true);
 
@@ -63,28 +65,18 @@ const PresentaInfoAdTable = ({datosSeleccionados, datosSecSubdocumentoPresenta})
     //FIC: Columns Table Definition.
     const ProductsColumns = [
         {
-            accessorKey: "IdEtiquetaOK",
+            accessorKey: "IdTipoEstatusOK",
             header: "IdEtiquetaOK",
             size: 30, //small column
         },
         {
-            accessorKey: "IdEtiqueta",
+            accessorKey: "Actual",
             header: "IdEtiqueta",
             size: 30, //small column
         },
         {
-            accessorKey: "Valor",
+            accessorKey: "Observacion",
             header: "Valor",
-            size: 30, //small column
-        },
-        {
-            accessorKey: "IdTipoSeccionOK",
-            header: "IdTipoSeccionOK",
-            size: 30, //small column
-        },
-        {
-            accessorKey: "Secuencia",
-            header: "Secuencia",
             size: 30, //small column
         }
     ];
@@ -143,4 +135,4 @@ const PresentaInfoAdTable = ({datosSeleccionados, datosSecSubdocumentoPresenta})
     );
 };
 
-export default PresentaInfoAdTable;
+export default PresentaEstatus;

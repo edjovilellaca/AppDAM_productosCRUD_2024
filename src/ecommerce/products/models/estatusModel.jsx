@@ -1,5 +1,4 @@
 import { getDetailRow } from "../helpers/Utils";
-import mongoose from 'mongoose';
 
 export function EstatusModel() {
     let Estatus = {

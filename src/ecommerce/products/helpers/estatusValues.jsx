@@ -1,7 +1,6 @@
 import {  EstatusModel } from "../models/estatusModel";
 
 export const EstatusValues = (values)=>{
-   console.log('Valores: ', values);
    let Estatus =  EstatusModel()
    Estatus.IdTipoEstatusOK=values.IdTipoEstatusOK,
    Estatus.Actual=values.Actual,
