@@ -71,12 +71,12 @@ const PresentaEstatus = ({datosSeleccionados, datosSecSubdocumentoPresenta}) => 
         },
         {
             accessorKey: "Actual",
-            header: "IdEtiqueta",
+            header: "Actual",
             size: 30, //small column
         },
         {
             accessorKey: "Observacion",
-            header: "Valor",
+            header: "Observacion",
             size: 30, //small column
         }
     ];
