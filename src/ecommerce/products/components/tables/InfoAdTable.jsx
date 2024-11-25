@@ -11,9 +11,10 @@ import PublishIcon from '@mui/icons-material/Publish';
 import RefreshIcon from '@mui/icons-material/Refresh';
 //FIC: DB
 import {GetInfoAd} from '../../services/remote/get/GetInfoAd.jsx';
+import { delInfoAdProd } from "../../services/remote/del/delOneSubInfoAd.jsx";
 //FIC: Modals
-//import AddInfoAdModal from "../modals/AddInfoAdModal.jsx";
-
+import AddInfoAdModal from "../modals/AddInfoAdModal.jsx";
+import UpdateInfoAdModal from "../modals/UpdateInfoAdModal.jsx";
 
 //FIC: Table - FrontEnd.
 const InfoAdTable = ({datosSeleccionados}) => {
@@ -22,11 +23,13 @@ const InfoAdTable = ({datosSeleccionados}) => {
 
     //FIC: controlar el estado de la data de Productos.
     const [ProductData, setProductData] = useState([]);
+    const [selectedProductInfoAd, setselectedProductInfoAd] = useState(null);
 
     //FIC: controlar el estado que muestra u oculta la modal de nuevo Producto.
-    const [AddProductShowModal, setAddProductShowModal] = useState(false);
+    const [AddInfoAdShowModal, setAddInfoAdShowModal] = useState(false);
+    const [UpdateInfoAdShowModal, setUpdateInfoAdShowModal] = useState(false);
 
-    async function fetchData() {
+    const fetchData = async () => {
         try {
 
             if (datosSeleccionados.IdProdServOK === "0" || datosSeleccionados.IdInstitutoOK === "0") {
@@ -35,12 +38,37 @@ const InfoAdTable = ({datosSeleccionados}) => {
             }
 
             const OneProductData = await GetInfoAd(datosSeleccionados.IdProdServOK, datosSeleccionados.IdInstitutoOK);
-            setProductData(OneProductData);
+            setProductData([...OneProductData]);
             setLoadingTable(false);
         } catch (error) {
-            console.error("Error al obtener los productos en useEffect de InfoAdTable:", error);
+            console.error("Error al obtener la información adicional en useEffect de InfoAdTable:", error);
         }
     }
+
+    const handleEditClick = (table) => {
+        const selectedRows = table.getSelectedRowModel().flatRows;
+        if (selectedRows.length === 0) {
+            alert("Selecciona una fila para editar.");
+            return;
+        }
+        const product = selectedRows[0]?.original;
+        setselectedProductInfoAd(product);
+        setUpdateInfoAdShowModal(true);
+      };
+
+    const handleDelClick = async (table) => {
+        const selectedRows = table.getSelectedRowModel().flatRows;
+        if (selectedRows.length === 0) {
+            alert("Selecciona una fila para borrar.");
+            return;
+        }
+        const product = selectedRows[0]?.original;
+        const infoAdId = product[Object.keys(product)[5]];
+        
+        console.log('producto id obj infoad: ', infoAdId);
+        await delInfoAdProd(datosSeleccionados.IdProdServOK, infoAdId);
+        await fetchData();
+      };
 
 
     useEffect(() => {
@@ -82,6 +110,8 @@ const InfoAdTable = ({datosSeleccionados}) => {
                 <MaterialReactTable
                     columns={ProductsColumns}
                     data={ProductData}
+                    enableMultiRowSelection={false}
+                    enableRowSelection={true}
                     state={{isLoading: loadingTable}}
                     initialState={{density: "compact", showGlobalFilter: true}}
                     renderTopToolbarCustomActions={({table}) => (
@@ -90,7 +120,7 @@ const InfoAdTable = ({datosSeleccionados}) => {
                             <Stack direction="row" sx={{ m: 1 }}>
                                 <Box>
                                     <Tooltip title="Agregar">
-                                    <IconButton onClick={() => setAddProductShowModal(true)}>
+                                    <IconButton onClick={() => setAddInfoAdShowModal(true)}>
                                         <AddCircleIcon />
                                     </IconButton>
                                     </Tooltip>
@@ -116,15 +146,27 @@ const InfoAdTable = ({datosSeleccionados}) => {
                     )}
                 />
             </Box>
-            {/* M O D A L E S 
-            <Dialog open={AddProductShowModal}>
+            {/* M O D A L E S */}
+            <Dialog open={AddInfoAdShowModal}>
                 <AddInfoAdModal
-                    AddProductShowModal={AddProductShowModal}
-                    setAddProductShowModal={setAddProductShowModal}
-                    datosSeleccionados={datosSeleccionados}
-                    onClose={() => setAddProductShowModal(false)}
+                    AddInfoAdShowModal={AddInfoAdShowModal}
+                    setAddInfoAdShowModal={setAddInfoAdShowModal}
+                    prodKey={datosSeleccionados.IdProdServOK}
+                    onInfoAddAdded={fetchData}
+                    onClose={() => setAddInfoAdShowModal(false)}
                 />
-            </Dialog>*/}
+            </Dialog>
+
+            <Dialog open={UpdateInfoAdShowModal}>
+                <UpdateInfoAdModal
+                    UpdateInfoAdShowModal={UpdateInfoAdShowModal}
+                    setUpdateInfoAdShowModal={setUpdateInfoAdShowModal}
+                    prodKey={datosSeleccionados.IdProdServOK}
+                    InfoAdData={selectedProductInfoAd}
+                    onInfoAdUpdated={fetchData}
+                    onClose={() => setUpdateInfoAdShowModal(false)}
+                />
+            </Dialog>
         </Box>
     );
 };

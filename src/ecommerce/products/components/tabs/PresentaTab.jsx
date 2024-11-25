@@ -4,8 +4,7 @@ import {useState} from "react";
 import PresentaNavTab from "./PresentaNavTab.jsx";
 import PresentaTable from "../tables/PresentaTable.jsx";
 import PresentaInfoVTATable from "../tables/PresentaInfoVTATable.jsx";
-import PresentaInfoAdTable from "../tables/PresentaInfoAdTable.jsx";
-import PresentaPaquete from "../tables/PresentaPaquete.jsx";
+import PresentaEstatus from "../tables/PresentaEstatusTable.jsx";
 import PresentaArchivosTable from "../tables/PresentaArchivosTable.jsx";
 
 export default function PresentaTab({datosSeleccionados}) {
@@ -21,6 +20,8 @@ export default function PresentaTab({datosSeleccionados}) {
         IdPresentaBK: "0"
     });
 
+    console.log();
+
     return (
         <Box>
             <PresentaNavTab
@@ -32,12 +33,10 @@ export default function PresentaTab({datosSeleccionados}) {
 
             {currentNameTabInPresentaTab == "PRESENTA" && <PresentaTable datosSeleccionados={datosSeleccionados}
                                                                          setDatosSecSubdocumentoPresenta={setDatosSecSubdocumentoPresenta}/>}
+            {currentNameTabInPresentaTab == "ESTATUS" && <PresentaEstatus datosSeleccionados={datosSeleccionados}
+                                                                                datosSecSubdocumentoPresenta={datosSecSubdocumentoPresenta}/>}                                                            
             {currentNameTabInPresentaTab == "INFO_VTA" && <PresentaInfoVTATable datosSeleccionados={datosSeleccionados}
                                                                                 datosSecSubdocumentoPresenta={datosSecSubdocumentoPresenta}/>}
-            {currentNameTabInPresentaTab == "INFO_AD" && <PresentaInfoAdTable datosSeleccionados={datosSeleccionados}
-                                                                              datosSecSubdocumentoPresenta={datosSecSubdocumentoPresenta}/>}
-            {currentNameTabInPresentaTab == "PAQUETE" && <PresentaPaquete datosSeleccionados={datosSeleccionados}
-                                                                              datosSecSubdocumentoPresenta={datosSecSubdocumentoPresenta}/>}                                                                  
             {currentNameTabInPresentaTab == "ARCHIVOS" && <PresentaArchivosTable datosSeleccionados={datosSeleccionados}
                                                                                  datosSecSubdocumentoPresenta={datosSecSubdocumentoPresenta}/>}
 

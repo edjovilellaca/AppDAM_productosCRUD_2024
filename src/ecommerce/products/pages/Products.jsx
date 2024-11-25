@@ -5,12 +5,11 @@ import ProductsTable from "../components/tables/ProductsTables.jsx";
 import PresentaTab from "../components/tabs/PresentaTab.jsx";
 import EstatusTable from "../components/tables/EstatusTable.jsx";
 import InfoAdTable from "../components/tables/InfoAdTable.jsx";
-import NegociosTable from "../components/tables/NegociosTable.jsx";
 
 const Products = () => {
     const [currentRowInProductsTab, setCurrentRowInProductsTab] = useState(0);
     const [currentTabInPrincipalTab, setCurrentTabInPrincipalTab] = useState("PRODUCTOS");
-    const [datosSeleccionados, setDatosSeleccionados] = useState({IdInstitutoOK: "0", IdProdServOK: "0"});
+    const [datosSeleccionados, setDatosSeleccionados] = useState({IdInstitutoOK: "0", IdProdServOK: "0", IdProdServBK:"0"});
 
     return (
         <Box>
@@ -24,13 +23,10 @@ const Products = () => {
                 <ProductsTable setDatosSeleccionados={setDatosSeleccionados} datosSeleccionados={datosSeleccionados}/>}
 
             {/* Página de negocios */}
-            {currentTabInPrincipalTab === "ESTATUS" && <EstatusTable datosSeleccionados={datosSeleccionados}/>}
+            {currentTabInPrincipalTab === "ESTATUS" && <EstatusTable setDatosSeleccionados={setDatosSeleccionados} datosSeleccionados={datosSeleccionados}/>}
 
             {/*Pagina de presenta*/}
             {currentTabInPrincipalTab === "PRESENTACIONES" && <PresentaTab datosSeleccionados={datosSeleccionados}/>}
-
-            {/*Pagina de Negocios*/}
-            {currentTabInPrincipalTab === "NEGOCIOS" && <NegociosTable datosSeleccionados={datosSeleccionados}/>}
 
             {/*Página de Información adicional*/}
             {currentTabInPrincipalTab === "INFO_AD" &&

@@ -88,6 +88,39 @@ const PresentaArchivosTable = ({datosSeleccionados, datosSecSubdocumentoPresenta
             accessorKey: "RutaArchivo",
             header: "RutaArchivo",
             size: 30, //small column
+            maxSize: 30,
+            Cell: ({ cell }) => (
+                <div
+                    style={{
+                        minWidth: 10,
+                        maxWidth: 500,
+                        minHeight: 30,
+                        whiteSpace: "nowrap",
+                        overflow: "auto",
+                    }}
+                >
+                    {cell.getValue()}
+                </div>
+            ),
+        },
+        {
+            accessorKey: "Path",
+            header: "Path",
+            size: 30, //small column
+            maxSize: 10,
+            Cell: ({ cell }) => (
+                <div
+                    style={{
+                        minWidth: 10,
+                        maxWidth: 500,
+                        minHeight: 30,
+                        whiteSpace: "nowrap",
+                        overflow: "auto",
+                    }}
+                >
+                    {cell.getValue()}
+                </div>
+            ),
         },
         {
             accessorKey: "IdTipoArchivoOK",

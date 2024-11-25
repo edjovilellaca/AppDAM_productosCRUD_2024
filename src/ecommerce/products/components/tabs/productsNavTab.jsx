@@ -1,6 +1,6 @@
 import { Box, Tabs, Tab } from "@mui/material";
 import React, { useState } from "react";
-const ProductsTabs = ["PRODUCTOS", "ESTATUS", "PRESENTACIONES", "NEGOCIOS", "INFO_AD"];
+const ProductsTabs = ["PRODUCTOS", "ESTATUS", "PRESENTACIONES", "INFO_AD"];
 
 //const ProductsNavTab = ({currentRowInProductsTab, setCurrentNameTabInPrincipalTab, setBusinessTabInPrincipalTabIsSelected}) => {
 
@@ -23,11 +23,8 @@ const ProductsNavTab = ({currentRowInProductsTab, setCurrentNameTabInPrincipalTa
             case "PRESENTACIONES":
                 setCurrentTabIndex(2);
                 break;
-            case "NEGOCIOS":
-                setCurrentTabIndex(3);
-                break;
             case "INFO_AD":
-                setCurrentTabIndex(4);
+                setCurrentTabIndex(3);
                 break;
                                            
         }

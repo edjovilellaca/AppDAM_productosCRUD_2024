@@ -12,7 +12,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 //FIC: DB
 import {GetPresenta} from '../../services/remote/get/GetPresenta.jsx';
 //FIC: Modals
-//mport AddPresentaModal from "../modals/AddPresentaModal.jsx";
+import AddPresentaModal from "../modals/AddPresentaModal.jsx";
 
 
 //FIC: Table - FrontEnd.
@@ -23,10 +23,10 @@ const PresentaTable = ({datosSeleccionados, setDatosSecSubdocumentoPresenta}) =>
     //FIC: controlar el estado de la data de Productos.
     const [ProductData, setProductData] = useState([]);
 
-    //FIC: controlar el estado que muestra u oculta la modal de nuevo Producto.
-    const [AddProductShowModal, setAddProductShowModal] = useState(false);
+    //FIC: controlar el estado que muestra u oculta la modal de nuevo Presenta.
+    const [AddPresentaShowModal, setAddPresentaShowModal] = useState(false);
 
-    async function fetchData() {
+    const fetchData = async () => {
         try {
 
             if (datosSeleccionados.IdProdServOK === "0" || datosSeleccionados.IdInstitutoOK === "0") {
@@ -35,7 +35,7 @@ const PresentaTable = ({datosSeleccionados, setDatosSecSubdocumentoPresenta}) =>
             }
 
             const OneProductData = await GetPresenta(datosSeleccionados.IdProdServOK, datosSeleccionados.IdInstitutoOK);
-            setProductData(OneProductData);
+            setProductData([...OneProductData]);
             setLoadingTable(false);
         } catch (error) {
             console.error("Error al obtener los productos en useEffect de EstatusTable:", error);
@@ -50,8 +50,8 @@ const PresentaTable = ({datosSeleccionados, setDatosSecSubdocumentoPresenta}) =>
         // Accede a los datos necesarios del registro (rowData) y llama a tu método
         const {IdPresentaOK, IdPresentaBK} = rowData.original;
         // Mostrar en consola los datos del registro
-        console.log("IdInstitutoOK: ", IdPresentaOK);
-        console.log("IdProdServOK: ", IdPresentaBK);
+        console.log("IdPresentaOK: ", IdPresentaOK);
+        console.log("IdPresentaBK: ", IdPresentaBK);
         // Actualizar el estado de los datos seleccionados
         setDatosSecSubdocumentoPresenta({IdPresentaOK, IdPresentaBK});
     };
@@ -82,6 +82,11 @@ const PresentaTable = ({datosSeleccionados, setDatosSecSubdocumentoPresenta}) =>
             accessorKey: "Indice",
             header: "Indice",
             size: 30, //small column
+        },
+        {
+            accessorKey: "Principal",
+            header: "Principal",
+            size: 30, //small column
         }
     ];
 
@@ -106,7 +111,7 @@ const PresentaTable = ({datosSeleccionados, setDatosSecSubdocumentoPresenta}) =>
                             <Stack direction="row" sx={{ m: 1 }}>
                                 <Box>
                                     <Tooltip title="Agregar">
-                                    <IconButton onClick={() => setAddProductShowModal(true)}>
+                                    <IconButton onClick={() => setAddPresentaShowModal(true)}>
                                         <AddCircleIcon />
                                     </IconButton>
                                     </Tooltip>
@@ -132,15 +137,15 @@ const PresentaTable = ({datosSeleccionados, setDatosSecSubdocumentoPresenta}) =>
                     )}
                 />
             </Box>
-            {/* M O D A L E S 
-            <Dialog open={AddProductShowModal}>
+            {/* M O D A L E S */}
+            <Dialog open={AddPresentaShowModal} onClose={() => setAddPresentaShowModal(false)}>
                 <AddPresentaModal
-                    AddProductShowModal={AddProductShowModal}
-                    setAddProductShowModal={setAddProductShowModal}
-                    datosSeleccionados={datosSeleccionados}
-                    onClose={() => setAddProductShowModal(false)}
-                />
-            </Dialog>*/}
+                    AddPresentaShowModal={AddPresentaShowModal}
+                    setAddPresentaShowModal={setAddPresentaShowModal}
+                    prodKey={datosSeleccionados.IdProdServOK}
+                    prodBK={datosSeleccionados.IdProdServBK}
+                    onPresentaAdded={fetchData}/>
+            </Dialog>
         </Box>
     );
 };

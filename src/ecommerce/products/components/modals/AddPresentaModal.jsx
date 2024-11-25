@@ -5,32 +5,32 @@ import SaveIcon from "@mui/icons-material/Save";
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { ProductValues } from "../../helpers/productsValues";
-import { AddOneProduct } from "../../../products/services/remote/post/AddOneProduct";
+import { PresentaValues } from "../../helpers/presentaValues";
+import { AddOnePresenta } from "../../services/remote/post/AddOnePresenta";
 
-const AddProductModal = ({AddProductShowModal, setAddProductShowModal, onProductAdded}) => {
+const AddPresentaModal = ({AddPresentaShowModal, setAddPresentaShowModal, onPresentaAdded, prodKey, prodBK}) => {
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
     const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
     const [Loading, setLoading] = useState(false);
 
     const formik = useFormik({
         initialValues: {
-            IdInstitutoOK: "",
-            IdProdServOK: "",
-            IdProdServBK: "",
+            IdPresentaOK: prodKey + '-',
+            IdPresentaBK: prodBK + '-',
             CodigoBarras: "",
-            DesProdServ: "",
-            Indice: "",
+            DesPresenta: "",
+            Principal: "",
+            Indice: ""
         },
         validationSchema: Yup.object({
-            IdInstitutoOK: Yup.string().required("Campo requerido"),
-            IdProdServOK: Yup.string().required("Campo requerido"),
-            IdProdServBK: Yup.string().required("Campo requerido"),
-            CodigoBarras: Yup.string()
+            IdPresentaOK: Yup.string().required("Campo requerido"),
+            IdPresentaBK: Yup.string().required("Campo requerido"),
+            CodigoBarras: Yup.string().required("Campo requerido"),
+            DesPresenta: Yup.string().required("Campo requerido"),
+            Principal: Yup.string()
                 .required("Campo requerido")
-                .matches(/^[0-9]+$/, 'Solo se permiten numeros'),
-            DesProdServ: Yup.string()
-                .required("Campo requerido"),
+                .max(1, 'Solo se permite una letra')
+                .matches(/^[NS]+$/, 'Solo se permiten letras S/N'),
             Indice: Yup.string().required("Campo requerido"),
         }),
         
@@ -41,18 +41,17 @@ const AddProductModal = ({AddProductShowModal, setAddProductShowModal, onProduct
             setMensajeExitoAlert(null);
 
             try {
+                const Presenta = PresentaValues(values);
+                console.log("<<Presenta>>", Presenta);
+                await AddOnePresenta(prodKey, Presenta);
 
-                const Product = ProductValues(values);
-                console.log("<<Product>>", Product);
-                await AddOneProduct(Product);
-
-                setMensajeExitoAlert("Producto creado y guardado Correctamente");
-                onProductAdded();
+                setMensajeExitoAlert("Presenta creado y guardado Correctamente");
+                onPresentaAdded();
 
             } catch (e) {
                 
                 setMensajeExitoAlert(null);
-                setMensajeErrorAlert("No se pudo crear el Producto");
+                setMensajeErrorAlert("No se pudo crear el Presenta");
 
             }
             setLoading(false);
@@ -68,15 +67,15 @@ const AddProductModal = ({AddProductShowModal, setAddProductShowModal, onProduct
     };
     return(
         <Dialog 
-            open={AddProductShowModal}
-            onClose={() => setAddProductShowModal(false)}
+            open={AddPresentaShowModal}
+            onClose={() => setAddPresentaShowModal(false)}
             fullWidth
         >
             <form onSubmit={formik.handleSubmit}>
                 {/* FIC: Aqui va el Titulo de la Modal */}
                 <DialogTitle>
                     <Typography component="h6">
-                        <strong>Agregar Nuevo Producto</strong>
+                        <strong>Agregar Nuevo Estatus</strong>
                     </Typography>
                 </DialogTitle>
                 {/* FIC: Aqui va un tipo de control por cada Propiedad de Institutos */}
@@ -86,44 +85,44 @@ const AddProductModal = ({AddProductShowModal, setAddProductShowModal, onProduct
                 >
                     {/* FIC: Campos de captura o selección */}
                     <TextField
-                        id="IdInstitutoOK"
-                        label="IdInstitutoOK*"
-                        value={formik.values.IdInstitutoOK}
+                        id="IdPresentaOK"
+                        label="IdPresentaOK*"
+                        value={formik.values.IdPresentaOK}
                         {...commonTextFieldProps}
-                        error={ formik.touched.IdInstitutoOK && Boolean(formik.errors.IdInstitutoOK) }
-                        helperText={ formik.touched.IdInstitutoOK && formik.errors.IdInstitutoOK }
+                        error={ formik.touched.IdPresentaOK && Boolean(formik.errors.IdPresentaOK) }
+                        helperText={ formik.touched.IdPresentaOK && formik.errors.IdPresentaOK }
                     />
                     <TextField
-                        id="IdProdServOK"
-                        label="IdProdServOK*"
-                        value={formik.values.IdProdServOK}
+                        id="IdPresentaBK"
+                        label="IdPresentaBK*"
+                        value={formik.values.IdPresentaBK}
                         {...commonTextFieldProps}
-                        error={ formik.touched.IdProdServOK && Boolean(formik.errors.IdProdServOK) }
-                        helperText={ formik.touched.IdProdServOK && formik.errors.IdProdServOK }
-                    />
-                    <TextField
-                        id="IdProdServBK"
-                        label="IdProdServBK*"
-                        value={formik.values.IdProdServBK}
-                        {...commonTextFieldProps}
-                        error={ formik.touched.IdProdServBK && Boolean(formik.errors.IdProdServBK) }
-                        helperText={ formik.touched.IdProdServBK && formik.errors.IdProdServBK }
+                        error={ formik.touched.IdPresentaBK && Boolean(formik.errors.IdPresentaBK) }
+                        helperText={ formik.touched.IdPresentaBK && formik.errors.IdPresentaBK }
                     />
                     <TextField
                         id="CodigoBarras"
                         label="CodigoBarras*"
-                        value={formik.values.Matriz}
+                        value={formik.values.CodigoBarras}
                         {...commonTextFieldProps}
-                        error={ formik.touched.Matriz && Boolean(formik.errors.Matriz) }
-                        helperText={ formik.touched.Matriz && formik.errors.Matriz }
+                        error={ formik.touched.CodigoBarras && Boolean(formik.errors.CodigoBarras) }
+                        helperText={ formik.touched.CodigoBarras && formik.errors.CodigoBarras }
                     />
                     <TextField
-                        id="DesProdServ"
-                        label="DesProdServ*"
-                        value={formik.values.DesProdServ}
+                        id="DesPresenta"
+                        label="DesPresenta*"
+                        value={formik.values.DesPresenta}
                         {...commonTextFieldProps}
-                        error={ formik.touched.DesProdServ && Boolean(formik.errors.DesProdServ) }
-                        helperText={ formik.touched.DesProdServ && formik.errors.DesProdServ }
+                        error={ formik.touched.DesPresenta && Boolean(formik.errors.DesPresenta) }
+                        helperText={ formik.touched.DesPresenta && formik.errors.DesPresenta }
+                    />
+                    <TextField
+                        id="Principal"
+                        label="Principal*"
+                        value={formik.values.Principal}
+                        {...commonTextFieldProps}
+                        error={ formik.touched.Principal && Boolean(formik.errors.Principal) }
+                        helperText={ formik.touched.Principal && formik.errors.Principal }
                     />
                     <TextField
                         id="Indice"
@@ -159,7 +158,7 @@ const AddProductModal = ({AddProductShowModal, setAddProductShowModal, onProduct
                         loadingPosition="start"
                         startIcon={<CloseIcon />}
                         variant="outlined"
-                        onClick={() => setAddProductShowModal(false)}
+                        onClick={() => setAddPresentaShowModal(false)}
                     >
                         <span>CERRAR</span>
                     </LoadingButton>
@@ -180,4 +179,4 @@ const AddProductModal = ({AddProductShowModal, setAddProductShowModal, onProduct
         </Dialog>
     );
 };
-export default AddProductModal;
+export default AddPresentaModal;

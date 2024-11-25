@@ -12,10 +12,11 @@ import {GetEstatus} from '../../services/remote/get/GetEstatus.jsx';
 //FIC: Modals
 import AddEstatusModal from "../modals/AddEstatusModal";
 import { delOneSubProduct } from "../../services/remote/del/delOneSubProduct.jsx";
+import UpdateEstatusModal from "../modals/UpdateEstatusModal.jsx";
 
 
 //FIC: Table - FrontEnd.
-const EstatusTable = ({datosSeleccionados}) => {
+const EstatusTable = ({setDatosSeleccionados, datosSeleccionados}) => {
     //FIC: controlar el estado del indicador (loading).
     const [loadingTable, setLoadingTable] = useState(true);
 
@@ -24,28 +25,14 @@ const EstatusTable = ({datosSeleccionados}) => {
 
     //FIC: controlar el estado que muestra u oculta la modal de nuevo Producto.
     const [AddEstatusShowModal, setAddEstatusShowModal] = useState(false);
-    
-    async function fetchData() {
+    const [UpdateEstatusShowModal, setUpdateEstatusShowModal] = useState(false);
 
-        try {
+    const [selectedEstatus, setSelectedEstatus] = useState(null);
 
-            if (datosSeleccionados.IdProdServOK === "0") {
-                setLoadingTable(false);
-                return;
-            }
-            
-            const OneProductData = await GetEstatus(datosSeleccionados.IdProdServOK, datosSeleccionados.IdInstitutoOK);
-
-            setProductData(OneProductData);
-            setLoadingTable(false);
-        } catch (error) {
-            console.error("Error al obtener los productos en useEffect de EstatusTable:", error);
-        }
-    }
-
-    const fetchDataa = async () => {
+    const fetchData = async () => {
       setLoadingTable(true);
       try {
+
         if (datosSeleccionados.IdProdServOK === "0") {
             setLoadingTable(false);
             return;
@@ -53,30 +40,40 @@ const EstatusTable = ({datosSeleccionados}) => {
         
         const OneProductData = await GetEstatus(datosSeleccionados.IdProdServOK, datosSeleccionados.IdInstitutoOK);
 
-        setProductData(OneProductData);
+        setProductData([...OneProductData]);
         setLoadingTable(false);
-      } catch (error) {
-          console.error("Error al obtener productos:", error);
-      }
-      setLoadingTable(false);
+    } catch (error) {
+        console.error("Error al obtener los productos en useEffect de EstatusTable:", error);
+    }
     };
 
     useEffect(() => {
         fetchData();
     }, []);
 
-    const handleDelClick = (table) => {
+    const handleEditClick = (table) => {
+        const selectedRows = table.getSelectedRowModel().flatRows;
+        if (selectedRows.length === 0) {
+            alert("Selecciona una fila para editar.");
+            return;
+        }
+        const estatus = selectedRows[0]?.original;
+        setSelectedEstatus(estatus);
+        setUpdateEstatusShowModal(true);
+    };
+
+    const handleDelClick = async (table) => {
         const selectedRows = table.getSelectedRowModel().flatRows;
         if (selectedRows.length === 0) {
             alert("Selecciona una fila para borrar.");
             return;
         }
         const product = selectedRows[0]?.original;
-        const IdTipoEstatusOK = product[Object.keys(product)[1]];
+        const IdTipoEstatusOK = product[Object.keys(product)[0]];
         
         console.log('producttable: ', selectedRows);
-        delOneSubProduct(datosSeleccionados.IdProdServOK, IdTipoEstatusOK);
-        fetchDataa();
+        await delOneSubProduct(datosSeleccionados.IdProdServOK, IdTipoEstatusOK);
+        await fetchData();
       };
 
     //FIC: Columns Table Definition.
@@ -109,7 +106,6 @@ const EstatusTable = ({datosSeleccionados}) => {
                     enableRowSelection={true}
                     muiTableBodyRowProps={({row}) => ({
                         onClick: row.getToggleSelectedHandler(),
-                        onClickCapture: () => sendDataRow(row),
                         sx: {cursor: 'pointer'},
                     })}
                     renderTopToolbarCustomActions={({table}) => (
@@ -152,6 +148,16 @@ const EstatusTable = ({datosSeleccionados}) => {
                   setAddEstatusShowModal={setAddEstatusShowModal}
                   onEstatusAdded={fetchData}/>
           </Dialog>
+
+          <Dialog open={UpdateEstatusShowModal} onClose={() => setUpdateEstatusShowModal(false)}>
+              <UpdateEstatusModal
+                  UpdateEstatusShowModal={UpdateEstatusShowModal}
+                  setUpdateEstatusShowModal={setUpdateEstatusShowModal}
+                  estatusData={selectedEstatus}
+                  onEstatusUpdated={fetchData}
+                  prodKey={datosSeleccionados.IdProdServOK}/>
+          </Dialog>
+
         </Box>
     );
 };

@@ -7,12 +7,17 @@ import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
 
-import {getAllProducts} from '../../services/remote/get/getAllProducts';
+import { getAllProducts } from '../../services/remote/get/getAllProducts';
 import AddProductModal from "../modals/AddProductModal";
 import UpdateProductModal from '../modals/UpdateProductModal';
 import { delOneProduct } from '../../services/remote/del/delOneProduct';
 
 const ProdServColumns = [
+    {
+        accessorKey: "IdInstitutoOK",
+        header: "ID INSTITUTO OK",
+        size: 30 // small column
+    },
     {
         accessorKey: "IdProdServOK",
         header: "ID PRODSERV OK",
@@ -44,14 +49,14 @@ const ProductsTable = ({setDatosSeleccionados, datosSeleccionados}) => {
     const [selectedProduct, setSelectedProduct] = useState(null);
 
     const fetchData = async () => {
-      setLoadingTable(true);
-      try {
-          const AllProductsData = await getAllProducts();
-          setProdServData(AllProductsData);
-      } catch (error) {
-          console.error("Error al obtener productos:", error);
-      }
-      setLoadingTable(false);
+        setLoadingTable(true);
+        try {
+            const AllProductsData = await getAllProducts();
+            setProdServData([...AllProductsData]);
+        } catch (error) {
+            console.error("Error al obtener productos:", error);
+        }
+        setLoadingTable(false);
     };
 
     useEffect(() => {
@@ -61,12 +66,13 @@ const ProductsTable = ({setDatosSeleccionados, datosSeleccionados}) => {
     // Función para manejar el clic en una fila
     const sendDataRow = (rowData) => {
         // Accede a los datos necesarios del registro (rowData) y llama a tu método
-        const {IdInstitutoOK, IdProdServOK} = rowData.original;
+        const {IdInstitutoOK, IdProdServOK, IdProdServBK} = rowData.original;
         // Mostrar en consola los datos del registro
         console.log("IdInstitutoOK: ", IdInstitutoOK);
         console.log("IdProdServOK: ", IdProdServOK);
+        console.log("IdProdServBK: ", IdProdServBK);
         // Actualizar el estado de los datos seleccionados
-        setDatosSeleccionados({IdInstitutoOK, IdProdServOK});
+        setDatosSeleccionados({IdInstitutoOK, IdProdServOK, IdProdServBK});
     };
 
     const handleEditClick = (table) => {
@@ -80,7 +86,7 @@ const ProductsTable = ({setDatosSeleccionados, datosSeleccionados}) => {
       setUpdateProductShowModal(true);
     };
 
-    const handleDelClick = (table) => {
+    const handleDelClick = async (table) => {
       const selectedRows = table.getSelectedRowModel().flatRows;
       if (selectedRows.length === 0) {
           alert("Selecciona una fila para borrar.");
@@ -90,8 +96,8 @@ const ProductsTable = ({setDatosSeleccionados, datosSeleccionados}) => {
       const ProdPK = product[Object.keys(product)[2]];
 
       console.log('ProdPK: ', ProdPK);
-      delOneProduct(ProdPK);
-      fetchData();
+      await delOneProduct(ProdPK);
+      await fetchData();
     };
 
     return (
@@ -139,7 +145,7 @@ const ProductsTable = ({setDatosSeleccionados, datosSeleccionados}) => {
                 )}
             />
           </Box>
-          {/* AddProductModal click cosa que lo abre y cierra y actualiza */}
+          {/* AddProductModal click cosa que lo abre y cierra */}
           <Dialog open={AddProductShowModal} onClose={() => setAddProductShowModal(false)}>
               <AddProductModal
                   AddProductShowModal={AddProductShowModal}
