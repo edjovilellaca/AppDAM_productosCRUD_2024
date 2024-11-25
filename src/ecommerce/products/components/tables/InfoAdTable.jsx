@@ -12,8 +12,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 //FIC: DB
 import {GetInfoAd} from '../../services/remote/get/GetInfoAd.jsx';
 //FIC: Modals
-//import AddInfoAdModal from "../modals/AddInfoAdModal.jsx";
-
+import AddInfoAdModal from "../modals/AddInfoAdModal.jsx";
 
 //FIC: Table - FrontEnd.
 const InfoAdTable = ({datosSeleccionados}) => {
@@ -24,7 +23,7 @@ const InfoAdTable = ({datosSeleccionados}) => {
     const [ProductData, setProductData] = useState([]);
 
     //FIC: controlar el estado que muestra u oculta la modal de nuevo Producto.
-    const [AddProductShowModal, setAddProductShowModal] = useState(false);
+    const [AddInfoAdShowModal, setAddInfoAdShowModal] = useState(false);
 
     async function fetchData() {
         try {
@@ -90,7 +89,7 @@ const InfoAdTable = ({datosSeleccionados}) => {
                             <Stack direction="row" sx={{ m: 1 }}>
                                 <Box>
                                     <Tooltip title="Agregar">
-                                    <IconButton onClick={() => setAddProductShowModal(true)}>
+                                    <IconButton onClick={() => setAddInfoAdShowModal(true)}>
                                         <AddCircleIcon />
                                     </IconButton>
                                     </Tooltip>
@@ -116,15 +115,16 @@ const InfoAdTable = ({datosSeleccionados}) => {
                     )}
                 />
             </Box>
-            {/* M O D A L E S 
-            <Dialog open={AddProductShowModal}>
+            {/* M O D A L E S */}
+            <Dialog open={AddInfoAdShowModal}>
                 <AddInfoAdModal
-                    AddProductShowModal={AddProductShowModal}
-                    setAddProductShowModal={setAddProductShowModal}
-                    datosSeleccionados={datosSeleccionados}
-                    onClose={() => setAddProductShowModal(false)}
+                    AddInfoAdShowModal={AddInfoAdShowModal}
+                    setAddInfoAdShowModal={setAddInfoAdShowModal}
+                    prodKey={datosSeleccionados.IdProdServOK}
+                    onInfoAddAdded={fetchData}
+                    onClose={() => setAddInfoAdShowModal(false)}
                 />
-            </Dialog>*/}
+            </Dialog>
         </Box>
     );
 };
