@@ -145,7 +145,7 @@ const ProductsTable = ({setDatosSeleccionados, datosSeleccionados}) => {
                 )}
             />
           </Box>
-          {/* AddProductModal click cosa que lo abre y cierra y actualiza */}
+          {/* AddProductModal click cosa que lo abre y cierra */}
           <Dialog open={AddProductShowModal} onClose={() => setAddProductShowModal(false)}>
               <AddProductModal
                   AddProductShowModal={AddProductShowModal}
