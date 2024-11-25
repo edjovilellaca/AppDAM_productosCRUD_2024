@@ -6,10 +6,10 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { EstatusValues } from "../../helpers/estatusValues";
-import { AddOneEstatus } from "../../services/remote/post/AddOneEstatus";
+import { AddOnePresentaEstatus } from "../../services/remote/post/AddOnePresentaEstatus";
 import { GetEstatus } from "../../services/remote/get/GetEstatus";
 
-const AddEstatusModal = ({AddEstatusShowModal, setAddEstatusShowModal, onEstatusAdded, prodKey}) => {
+const AddEstatusModal = ({AddPresentaEstatusShowModal, setAddPresentaEstatusShowModal, onEstatusAdded, prodKey, presentaKey}) => {
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
     const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
     const [Loading, setLoading] = useState(false);
@@ -40,7 +40,7 @@ const AddEstatusModal = ({AddEstatusShowModal, setAddEstatusShowModal, onEstatus
             try {
                 const Estatus = EstatusValues(values);
                 console.log("<<Estatus>>", Estatus);
-                await AddOneEstatus(Estatus, prodKey);
+                await AddOnePresentaEstatus(prodKey, presentaKey , Estatus);
 
                 setMensajeExitoAlert("Estatus creado y guardado Correctamente");
                 onEstatusAdded();
@@ -63,8 +63,9 @@ const AddEstatusModal = ({AddEstatusShowModal, setAddEstatusShowModal, onEstatus
         disabled: !!mensajeExitoAlert,
     };
     
-    const fetchOpciones = async () => {
+    const fetchOpciones = async (prodKey) => {
         try {
+            console.log("prodkey: ", prodKey);
             const response = await GetEstatus(prodKey);
             setOpciones(response); 
         } catch (error) {
@@ -73,13 +74,13 @@ const AddEstatusModal = ({AddEstatusShowModal, setAddEstatusShowModal, onEstatus
     };
 
     useEffect(() => {
-        fetchOpciones();
+        fetchOpciones(prodKey);
     }, [prodKey]);
       
     return(
         <Dialog 
-            open={AddEstatusShowModal}
-            onClose={() => setAddEstatusShowModal(false)}
+            open={AddPresentaEstatusShowModal}
+            onClose={() => setAddPresentaEstatusShowModal(false)}
             fullWidth
         >
             <form onSubmit={formik.handleSubmit}>
@@ -139,8 +140,6 @@ const AddEstatusModal = ({AddEstatusShowModal, setAddEstatusShowModal, onEstatus
                     sx={{ display: 'flex', flexDirection: 'row' }}
                 >
                     <Box m="auto">
-                        {console.log("mensajeExitoAlert", mensajeExitoAlert)}
-                        {console.log("mensajeErrorAlert", mensajeErrorAlert)}
                         {mensajeErrorAlert && (
                         <Alert severity="error">
                             <b>¡ERROR!</b> ─ {mensajeErrorAlert}
@@ -159,7 +158,7 @@ const AddEstatusModal = ({AddEstatusShowModal, setAddEstatusShowModal, onEstatus
                         loadingPosition="start"
                         startIcon={<CloseIcon />}
                         variant="outlined"
-                        onClick={() => setAddEstatusShowModal(false)}
+                        onClick={() => setAddPresentaEstatusShowModal(false)}
                     >
                         <span>CERRAR</span>
                     </LoadingButton>

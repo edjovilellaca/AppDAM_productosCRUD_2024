@@ -7,12 +7,12 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
-import PublishIcon from '@mui/icons-material/Publish';
-import RefreshIcon from '@mui/icons-material/Refresh';
 //FIC: DB
 import {GetPresenta} from '../../services/remote/get/GetPresenta.jsx';
+import { delOneSubProduct } from "../../services/remote/del/delOneSubProduct.jsx";
 //FIC: Modals
 import AddPresentaModal from "../modals/AddPresentaModal.jsx";
+import UpdatePresentaModal from "../modals/UpdatePresentaModal.jsx";
 
 
 //FIC: Table - FrontEnd.
@@ -25,6 +25,9 @@ const PresentaTable = ({datosSeleccionados, setDatosSecSubdocumentoPresenta}) =>
 
     //FIC: controlar el estado que muestra u oculta la modal de nuevo Presenta.
     const [AddPresentaShowModal, setAddPresentaShowModal] = useState(false);
+    const [UpdatePresentaShowModal, setUpdatePresentaShowModal] = useState(false);
+
+    const [selectedPresenta, setSelectedPresenta] = useState(null);
 
     const fetchData = async () => {
         try {
@@ -38,13 +41,27 @@ const PresentaTable = ({datosSeleccionados, setDatosSecSubdocumentoPresenta}) =>
             setProductData([...OneProductData]);
             setLoadingTable(false);
         } catch (error) {
-            console.error("Error al obtener los productos en useEffect de EstatusTable:", error);
+            console.error("Error al obtener los productos en useEffect de PresentaTable:", error);
         }
     }
 
     useEffect(() => {
         fetchData();
     }, []);
+
+    const handleDelClick = async (table) => {
+        const selectedRows = table.getSelectedRowModel().flatRows;
+        if (selectedRows.length === 0) {
+            alert("Selecciona una fila para borrar.");
+            return;
+        }
+        const product = selectedRows[0]?.original;
+        const presentaOK = product[Object.keys(product)[0]];
+  
+        console.log('presentaOK: ', presentaOK);
+        await delOneSubProduct(datosSeleccionados.IdProdServOK, presentaOK, 'presentaciones');
+        await fetchData();
+      };
 
     const sendDataRow = (rowData) => {
         // Accede a los datos necesarios del registro (rowData) y llama a tu método
@@ -53,6 +70,7 @@ const PresentaTable = ({datosSeleccionados, setDatosSecSubdocumentoPresenta}) =>
         console.log("IdPresentaOK: ", IdPresentaOK);
         console.log("IdPresentaBK: ", IdPresentaBK);
         // Actualizar el estado de los datos seleccionados
+        setSelectedPresenta(rowData.original);
         setDatosSecSubdocumentoPresenta({IdPresentaOK, IdPresentaBK});
     };
 
@@ -116,7 +134,7 @@ const PresentaTable = ({datosSeleccionados, setDatosSecSubdocumentoPresenta}) =>
                                     </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Editar">
-                                    <IconButton onClick={() => handleEditClick(table)}>
+                                    <IconButton onClick={() => setUpdatePresentaShowModal(true)}>
                                         <EditIcon />
                                     </IconButton>
                                     </Tooltip>
@@ -145,6 +163,14 @@ const PresentaTable = ({datosSeleccionados, setDatosSecSubdocumentoPresenta}) =>
                     prodKey={datosSeleccionados.IdProdServOK}
                     prodBK={datosSeleccionados.IdProdServBK}
                     onPresentaAdded={fetchData}/>
+            </Dialog>
+
+            <Dialog open={UpdatePresentaShowModal} onClose={() => setUpdatePresentaShowModal(false)}>
+              <UpdatePresentaModal
+                  UpdatePresentaShowModal={UpdatePresentaShowModal}
+                  setUpdatePresentaShowModal={setUpdatePresentaShowModal}
+                  presentaData={selectedPresenta}
+                  onPresentaUpdated={fetchData}/>
             </Dialog>
         </Box>
     );

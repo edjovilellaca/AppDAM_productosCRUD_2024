@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export function delOneSubProduct(id, idSubDoc) {
+export function delOneSubProduct(id, idSubDoc, nombreSub) {
     console.log("<<EJECUTA>> API <<delOneSubProduct>> Requiere:", id, idSubDoc)
     return new Promise((resolve, reject) => {
         console.log('Antes del post axios');
-      axios.delete(`http://localhost:3020/api/v1/prod-serv/${id}/estatus/${idSubDoc}`)
+      axios.delete(`http://localhost:3020/api/v1/prod-serv/${id}/${nombreSub}/${idSubDoc}`)
         .then((response) => {
           console.log("<<RESPONSE>> delOneSubProduct ", id, idSubDoc)
           const data = response.data;

@@ -6,32 +6,31 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { PresentaValues } from "../../helpers/presentaValues";
-import { AddOnePresenta } from "../../services/remote/post/AddOnePresenta";
+import { UpdateOnePresenta } from "../../services/remote/put/UpdateOnePresenta.jsx";
 
-const AddPresentaModal = ({AddPresentaShowModal, setAddPresentaShowModal, onPresentaAdded, prodKey, prodBK}) => {
+const UpdatePresentaModal = ({UpdatePresentaShowModal, setUpdatePresentaShowModal, onPresentaUpdateed, presentaData}) => {
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
     const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
     const [Loading, setLoading] = useState(false);
 
     const formik = useFormik({
         initialValues: {
-            IdPresentaOK: prodKey + '-',
-            IdPresentaBK: prodBK + '-',
-            CodigoBarras: "",
-            DesPresenta: "",
-            Principal: "",
-            Indice: ""
+            IdPresentaOK: presentaData.IdPresentaOK,
+            IdPresentaBK: presentaData.IdPresentaBK,
+            CodigoBarras: presentaData?.CodigoBarras || "",
+            DesPresenta: presentaData?.DesPresenta  || "",
+            Principal: presentaData?.Principal || "",
+            Indice: presentaData?.Indice || ""
         },
         validationSchema: Yup.object({
-            IdPresentaOK: Yup.string().required("Campo requerido"),
-            IdPresentaBK: Yup.string().required("Campo requerido"),
-            CodigoBarras: Yup.string().required("Campo requerido"),
-            DesPresenta: Yup.string().required("Campo requerido"),
+            IdPresentaOK: Yup.string(),
+            IdPresentaBK: Yup.string(),
+            CodigoBarras: Yup.string(),
+            DesPresenta: Yup.string(),
             Principal: Yup.string()
-                .required("Campo requerido")
                 .max(1, 'Solo se permite una letra')
                 .matches(/^[NS]+$/, 'Solo se permiten letras S/N'),
-            Indice: Yup.string().required("Campo requerido"),
+            Indice: Yup.string(),
         }),
         
         onSubmit: async (values) => {
@@ -42,16 +41,16 @@ const AddPresentaModal = ({AddPresentaShowModal, setAddPresentaShowModal, onPres
 
             try {
                 const Presenta = PresentaValues(values);
-                console.log("<<Presenta>>", Presenta);
-                await AddOnePresenta(prodKey, Presenta);
+                console.log("<<PresentaUpdate>>", Presenta);
+                await UpdateOnePresenta(prodKey, Presenta);
 
-                setMensajeExitoAlert("Presenta creado y guardado Correctamente");
-                onPresentaAdded();
+                setMensajeExitoAlert("Presenta actualizado y guardado Correctamente");
+                onPresentaUpdateed();
 
             } catch (e) {
                 
                 setMensajeExitoAlert(null);
-                setMensajeErrorAlert("No se pudo crear el Presenta");
+                setMensajeErrorAlert("No se pudo actualizar Presenta");
 
             }
             setLoading(false);
@@ -67,15 +66,15 @@ const AddPresentaModal = ({AddPresentaShowModal, setAddPresentaShowModal, onPres
     };
     return(
         <Dialog 
-            open={AddPresentaShowModal}
-            onClose={() => setAddPresentaShowModal(false)}
+            open={UpdatePresentaShowModal}
+            onClose={() => setUpdatePresentaShowModal(false)}
             fullWidth
         >
             <form onSubmit={formik.handleSubmit}>
                 {/* FIC: Aqui va el Titulo de la Modal */}
                 <DialogTitle>
                     <Typography component="h6">
-                        <strong>Agregar Nuevo Estatus</strong>
+                        <strong>Actualizar Presentaciones</strong>
                     </Typography>
                 </DialogTitle>
                 {/* FIC: Aqui va un tipo de control por cada Propiedad de Institutos */}
@@ -91,6 +90,7 @@ const AddPresentaModal = ({AddPresentaShowModal, setAddPresentaShowModal, onPres
                         {...commonTextFieldProps}
                         error={ formik.touched.IdPresentaOK && Boolean(formik.errors.IdPresentaOK) }
                         helperText={ formik.touched.IdPresentaOK && formik.errors.IdPresentaOK }
+                        disabled
                     />
                     <TextField
                         id="IdPresentaBK"
@@ -99,6 +99,7 @@ const AddPresentaModal = ({AddPresentaShowModal, setAddPresentaShowModal, onPres
                         {...commonTextFieldProps}
                         error={ formik.touched.IdPresentaBK && Boolean(formik.errors.IdPresentaBK) }
                         helperText={ formik.touched.IdPresentaBK && formik.errors.IdPresentaBK }
+                        disabled
                     />
                     <TextField
                         id="CodigoBarras"
@@ -157,7 +158,7 @@ const AddPresentaModal = ({AddPresentaShowModal, setAddPresentaShowModal, onPres
                         loadingPosition="start"
                         startIcon={<CloseIcon />}
                         variant="outlined"
-                        onClick={() => setAddPresentaShowModal(false)}
+                        onClick={() => setUpdatePresentaShowModal(false)}
                     >
                         <span>CERRAR</span>
                     </LoadingButton>
@@ -178,4 +179,4 @@ const AddPresentaModal = ({AddPresentaShowModal, setAddPresentaShowModal, onPres
         </Dialog>
     );
 };
-export default AddPresentaModal;
+export default UpdatePresentaModal;
