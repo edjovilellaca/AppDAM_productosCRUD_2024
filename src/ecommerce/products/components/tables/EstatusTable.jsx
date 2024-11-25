@@ -49,7 +49,7 @@ const EstatusTable = ({setDatosSeleccionados, datosSeleccionados}) => {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [datosSeleccionados]);
 
     const handleEditClick = (table) => {
         const selectedRows = table.getSelectedRowModel().flatRows;
@@ -69,10 +69,11 @@ const EstatusTable = ({setDatosSeleccionados, datosSeleccionados}) => {
             return;
         }
         const product = selectedRows[0]?.original;
+        console.log("product: ", product);
         const IdTipoEstatusOK = product[Object.keys(product)[0]];
         
         console.log('producttable: ', selectedRows);
-        await delOneSubProduct(datosSeleccionados.IdProdServOK, IdTipoEstatusOK);
+        await delOneSubProduct(datosSeleccionados.IdProdServOK, IdTipoEstatusOK, 'estatus');
         await fetchData();
       };
 

@@ -13,14 +13,16 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import {GetPresenta} from "../../services/remote/get/GetPresenta.jsx";
 //FIC: Modals
 //import AddPresentaInfoAdModal from "../modals/AddPresentaInfoAdModa.jsx";
+import AddPresentaEstatusModal from "../modals/AddPresentaEstatusModal.jsx";
 
+let presentaKey = "";
 
 function getDatosFiltrados(OneProductData, datosSecSubdocumentoPresenta) {
     const resultadoFiltrado = OneProductData.filter(elemento => (
         elemento.IdPresentaOK === datosSecSubdocumentoPresenta.IdPresentaOK 
     ));
 
-    console.log('Estatus resultadoFiltrado: ', resultadoFiltrado);
+    presentaKey = resultadoFiltrado[0].IdPresentaOK;
 
     // Obtener cat_prod_serv_estatus del primer elemento filtrado (si existe)
     return resultadoFiltrado.length > 0
@@ -37,7 +39,7 @@ const PresentaEstatus = ({datosSeleccionados, datosSecSubdocumentoPresenta}) => 
     const [ProductData, setProductData] = useState([]);
 
     //FIC: controlar el estado que muestra u oculta la modal de nuevo Producto.
-    const [AddProductShowModal, setAddProductShowModal] = useState(false);
+    const [AddPresentaEstatusShowModal, setAddPresentaEstatusShowModal] = useState(false);
 
     async function fetchData() {
         try {
@@ -95,7 +97,7 @@ const PresentaEstatus = ({datosSeleccionados, datosSecSubdocumentoPresenta}) => 
                             <Stack direction="row" sx={{ m: 1 }}>
                                 <Box>
                                     <Tooltip title="Agregar">
-                                    <IconButton onClick={() => setAddProductShowModal(true)}>
+                                    <IconButton onClick={() => setAddPresentaEstatusShowModal(true)}>
                                         <AddCircleIcon />
                                     </IconButton>
                                     </Tooltip>
@@ -121,16 +123,16 @@ const PresentaEstatus = ({datosSeleccionados, datosSecSubdocumentoPresenta}) => 
                     )}
                 />
             </Box>
-            {/* M O D A L E S 
-            <Dialog open={AddProductShowModal}>
-                <AddPresentaInfoAdModal
-                    AddProductShowModal={AddProductShowModal}
-                    setAddProductShowModal={setAddProductShowModal}
-                    datosSeleccionados={datosSeleccionados}
-                    datosSecSubdocumentoPresenta={datosSecSubdocumentoPresenta}
-                    onClose={() => setAddProductShowModal(false)}
+            {/* M O D A L E S */}
+            <Dialog open={AddPresentaEstatusShowModal}>
+                <AddPresentaEstatusModal
+                    AddPresentaEstatusShowModal = {AddPresentaEstatusShowModal}
+                    setAddPresentaEstatusShowModal = {setAddPresentaEstatusShowModal}
+                    prodKey = {datosSeleccionados.IdProdServOK}
+                    presentaKey = {datosSecSubdocumentoPresenta.IdPresentaOK}
+                    onClose={() => setAddPresentaEstatusShowModal(false)}
                 />
-            </Dialog>*/}
+            </Dialog>
         </Box>
     );
 };
