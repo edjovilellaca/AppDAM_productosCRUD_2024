@@ -170,6 +170,8 @@ const PresentaTable = ({datosSeleccionados, setDatosSecSubdocumentoPresenta}) =>
                   UpdatePresentaShowModal={UpdatePresentaShowModal}
                   setUpdatePresentaShowModal={setUpdatePresentaShowModal}
                   presentaData={selectedPresenta}
+                  prodKey={datosSeleccionados.IdProdServOK}
+                  prodDocKey={datosSeleccionados._id}
                   onPresentaUpdated={fetchData}/>
             </Dialog>
         </Box>

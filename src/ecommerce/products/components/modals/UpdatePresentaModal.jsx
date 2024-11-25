@@ -6,12 +6,14 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { PresentaValues } from "../../helpers/presentaValues";
-import { UpdateOnePresenta } from "../../services/remote/put/UpdateOnePresenta.jsx";
+import { UpdateOnePresenta } from "../../services/remote/put/UpdateOnePresenta";
 
-const UpdatePresentaModal = ({UpdatePresentaShowModal, setUpdatePresentaShowModal, onPresentaUpdateed, presentaData}) => {
+const UpdatePresentaModal = ({UpdatePresentaShowModal, setUpdatePresentaShowModal, onPresentaUpdated, presentaData, prodKey, prodDocKey}) => {
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
     const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
     const [Loading, setLoading] = useState(false);
+
+    console.log('presentaData: ', presentaData);
 
     const formik = useFormik({
         initialValues: {
@@ -42,10 +44,10 @@ const UpdatePresentaModal = ({UpdatePresentaShowModal, setUpdatePresentaShowModa
             try {
                 const Presenta = PresentaValues(values);
                 console.log("<<PresentaUpdate>>", Presenta);
-                await UpdateOnePresenta(prodKey, Presenta);
+                await UpdateOnePresenta(prodKey, presentaData._id, Presenta);
 
                 setMensajeExitoAlert("Presenta actualizado y guardado Correctamente");
-                onPresentaUpdateed();
+                onPresentaUpdated();
 
             } catch (e) {
                 
