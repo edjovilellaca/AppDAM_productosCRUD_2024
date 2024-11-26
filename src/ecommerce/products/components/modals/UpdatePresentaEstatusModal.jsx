@@ -6,27 +6,26 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { EstatusValues } from "../../helpers/estatusValues";
-import { AddOnePresentaEstatus } from "../../services/remote/post/AddOnePresentaEstatus";
+import { UpdateOnePresentaEstatus } from "../../services/remote/put/UpdateOnePresentaEstatus";
 import { GetEstatus } from "../../services/remote/get/GetEstatus";
 
-const AddEstatusModal = ({AddPresentaEstatusShowModal, setAddPresentaEstatusShowModal, onEstatusAdded, prodKey, presentaKey}) => {
+const UpdatePresentaEstatusModal = ({UpdatePresentaEstatusShowModal, setUpdatePresentaEstatusShowModal, onEstatusUpdateed, prodKey, presentaKey, presetaEstatusData}) => {
     const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
     const [mensajeExitoAlert, setMensajeExitoAlert] = useState("");
     const [Loading, setLoading] = useState(false);
     const [opciones, setOpciones] = useState([]);
-
+    const  presetaEstatusData2 = presetaEstatusData.original;
     const formik = useFormik({
         initialValues: {
-            IdTipoEstatusOK: "",
-            Actual: "",
-            Observacion: ""
+            IdTipoEstatusOK: presetaEstatusData2?.IdTipoEstatusOK,
+            Actual: presetaEstatusData2?.Actual || "",
+            Observacion: presetaEstatusData2?.Observacion || ""
         },
         validationSchema: Yup.object({
             Actual: Yup.string()
-                .required("Campo requerido")
                 .max(1, 'Solo se permite una letra')
                 .matches(/^[NS]+$/, 'Solo se permiten letras S/N'),
-            Observacion: Yup.string().required("Campo requerido"),
+            Observacion: Yup.string(),
         }),
         
         onSubmit: async (values) => {
@@ -38,13 +37,13 @@ const AddEstatusModal = ({AddPresentaEstatusShowModal, setAddPresentaEstatusShow
             try {
                 const Estatus = EstatusValues(values);
                 console.log("<<Estatus>>", Estatus);
-                await AddOnePresentaEstatus(prodKey, presentaKey , Estatus);
+                await UpdateOnePresentaEstatus(prodKey, presentaKey , presetaEstatusData2._id, Estatus);
 
                 setMensajeExitoAlert("Estatus creado y guardado Correctamente");
-                onEstatusAdded();
+                onEstatusUpdateed();
 
             } catch (e) {
-                console.error("Error en AddEstatusModal:", e.message || e);
+                console.error("Error en UpdatePresentaEstatusModal:", e.message || e);
                 setMensajeExitoAlert(null);
                 setMensajeErrorAlert("No se pudo crear el Estatus");
 
@@ -76,8 +75,8 @@ const AddEstatusModal = ({AddPresentaEstatusShowModal, setAddPresentaEstatusShow
       
     return(
         <Dialog 
-            open={AddPresentaEstatusShowModal}
-            onClose={() => setAddPresentaEstatusShowModal(false)}
+            open={UpdatePresentaEstatusShowModal}
+            onClose={() => setUpdatePresentaEstatusShowModal(false)}
             fullWidth
         >
             <form onSubmit={formik.handleSubmit}>
@@ -155,7 +154,7 @@ const AddEstatusModal = ({AddPresentaEstatusShowModal, setAddPresentaEstatusShow
                         loadingPosition="start"
                         startIcon={<CloseIcon />}
                         variant="outlined"
-                        onClick={() => setAddPresentaEstatusShowModal(false)}
+                        onClick={() => setUpdatePresentaEstatusShowModal(false)}
                     >
                         <span>CERRAR</span>
                     </LoadingButton>
@@ -176,4 +175,4 @@ const AddEstatusModal = ({AddPresentaEstatusShowModal, setAddPresentaEstatusShow
         </Dialog>
     );
 };
-export default AddEstatusModal;
+export default UpdatePresentaEstatusModal;

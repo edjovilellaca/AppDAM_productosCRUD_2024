@@ -14,6 +14,7 @@ import {GetPresenta} from "../../services/remote/get/GetPresenta.jsx";
 //FIC: Modals
 //import AddPresentaInfoAdModal from "../modals/AddPresentaInfoAdModa.jsx";
 import AddPresentaEstatusModal from "../modals/AddPresentaEstatusModal.jsx";
+import UpdatePresentaEstatusModal from "../modals/UpdatePresentaEstatusModal.jsx";
 
 let presentaKey = "";
 
@@ -37,9 +38,12 @@ const PresentaEstatus = ({datosSeleccionados, datosSecSubdocumentoPresenta}) => 
 
     //FIC: controlar el estado de la data de Productos.
     const [ProductData, setProductData] = useState([]);
+    const [selectedPresentaEstatus, setSelectedPresentaEstatus] = useState(null);
 
     //FIC: controlar el estado que muestra u oculta la modal de nuevo Producto.
     const [AddPresentaEstatusShowModal, setAddPresentaEstatusShowModal] = useState(false);
+    const [UpdatePresentaEstatusShowModal, setUpdatePresentaEstatusShowModal] = useState(false);
+
 
     async function fetchData() {
         try {
@@ -64,11 +68,15 @@ const PresentaEstatus = ({datosSeleccionados, datosSecSubdocumentoPresenta}) => 
         fetchData();
     }, []);
 
+    const sendDataRow = (rowData) => {
+        setSelectedPresentaEstatus(rowData); 
+    };
+
     //FIC: Columns Table Definition.
     const ProductsColumns = [
         {
             accessorKey: "IdTipoEstatusOK",
-            header: "IdEtiquetaOK",
+            header: "IdTipoEstatusOK",
             size: 30, //small column
         },
         {
@@ -91,6 +99,13 @@ const PresentaEstatus = ({datosSeleccionados, datosSecSubdocumentoPresenta}) => 
                     data={ProductData}
                     state={{isLoading: loadingTable}}
                     initialState={{density: "compact", showGlobalFilter: true}}
+                    enableRowSelection={true}
+                    enableMultiRowSelection={false}
+                    muiTableBodyRowProps={({row}) => ({
+                        onClick: row.getToggleSelectedHandler(),
+                        onClickCapture: () => sendDataRow(row),
+                        sx: {cursor: 'pointer'},
+                    })}
                     renderTopToolbarCustomActions={({table}) => (
                         <>
                             {/* ------- ACTIONS TOOLBAR INIT ------ */}
@@ -102,7 +117,7 @@ const PresentaEstatus = ({datosSeleccionados, datosSecSubdocumentoPresenta}) => 
                                     </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Editar">
-                                    <IconButton onClick={() => handleEditClick(table)}>
+                                    <IconButton onClick={() => setUpdatePresentaEstatusShowModal(true)}>
                                         <EditIcon />
                                     </IconButton>
                                     </Tooltip>
@@ -130,7 +145,20 @@ const PresentaEstatus = ({datosSeleccionados, datosSecSubdocumentoPresenta}) => 
                     setAddPresentaEstatusShowModal = {setAddPresentaEstatusShowModal}
                     prodKey = {datosSeleccionados.IdProdServOK}
                     presentaKey = {datosSecSubdocumentoPresenta.IdPresentaOK}
+                    onEstatusAdded={fetchData}
                     onClose={() => setAddPresentaEstatusShowModal(false)}
+                />
+            </Dialog>
+
+            <Dialog open={UpdatePresentaEstatusShowModal}>
+                <UpdatePresentaEstatusModal
+                    UpdatePresentaEstatusShowModal = {UpdatePresentaEstatusShowModal}
+                    setUpdatePresentaEstatusShowModal = {setUpdatePresentaEstatusShowModal}
+                    prodKey = {datosSeleccionados.IdProdServOK}
+                    presentaKey = {datosSecSubdocumentoPresenta.IdPresentaOK}
+                    onEstatusUpdateed={fetchData}
+                    presetaEstatusData={selectedPresentaEstatus}
+                    onClose={() => setUpdatePresentaEstatusShowModal(false)}
                 />
             </Dialog>
         </Box>
